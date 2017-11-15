@@ -3,7 +3,8 @@
 #=============================================================================#
 #=============================================================================#
 # generate_arduino_firmware(name
-#      [BOARD board_id]
+#      [BOARD board_name]
+#      [BOARD_CPU board_cpu]
 #      [SKETCH sketch_path |
 #       SRCS  src1 src2 ... srcN]
 #      [HDRS  hdr1 hdr2 ... hdrN]
@@ -21,11 +22,12 @@
 #
 # The arguments are as follows:
 #
-#      name           # The name of the firmware target         [REQUIRED]
-#      BOARD          # Board name (such as uno, mega2560, ...) [REQUIRED]
+#      name           # The name of the firmware target               [REQUIRED]
+#      BOARD          # Board name (such as uno, mega2560, ...)       [REQUIRED]
+#      BOARD_CPU      # Board cpu (such as atmega328, atmega168, ...) [REQUIRED when BOARD has multiple versions]
 #      SKETCH         # Arduino sketch [must have SRCS or SKETCH]
 #      SRCS           # Sources        [must have SRCS or SKETCH]
-#      HDRS           # Headers 
+#      HDRS           # Headers
 #      LIBS           # Libraries to link
 #      ARDLIBS        # Arduino libraries to link (Wire, Servo, SPI, etc)
 #      PORT           # Serial port (enables upload support)
@@ -36,10 +38,10 @@
 #      MANUAL         # (Advanced) Only use AVR Libc/Includes
 #
 # Here is a short example for a target named test:
-#    
+#
 #       generate_arduino_firmware(
 #           NAME test
-#           SRCS test.cpp 
+#           SRCS test.cpp
 #                test2.cpp
 #           HDRS test.h test2.h
 #           BOARD uno)
@@ -56,7 +58,8 @@
 #
 #=============================================================================#
 # generate_avr_firmware(name
-#      [BOARD board_id]
+#      [BOARD board_name]
+#      [BOARD_CPU board_cpu]
 #       SRCS  src1 src2 ... srcN]
 #      [HDRS  hdr1 hdr2 ... hdrN]
 #      [LIBS  lib1 lib2 ... libN]
@@ -71,10 +74,11 @@
 #
 # The arguments are as follows:
 #
-#      name           # The name of the firmware target         [REQUIRED]
-#      BOARD          # Board name (such as uno, mega2560, ...) [REQUIRED]
-#      SRCS           # Sources                                 [REQUIRED]
-#      HDRS           # Headers 
+#      name           # The name of the firmware target                [REQUIRED]
+#      BOARD          # Board name (such as uno, mega2560, ...)        [REQUIRED]
+#      BOARD_CPU      # Board cpu (such as atmega328, atmega168, ...)  [REQUIRED when BOARD has multiple versions]
+#      SRCS           # Sources                                        [REQUIRED]
+#      HDRS           # Headers
 #      LIBS           # Libraries to link
 #      PORT           # Serial port (enables upload support)
 #      SERIAL         # Serial command for serial target
@@ -82,10 +86,10 @@
 #      AFLAGS         # Avrdude flags for target
 #
 # Here is a short example for a target named test:
-#    
+#
 #       generate_avr_firmware(
 #           NAME test
-#           SRCS test.cpp 
+#           SRCS test.cpp
 #                test2.cpp
 #           HDRS test.h test2.h
 #           BOARD uno)
@@ -102,7 +106,8 @@
 #
 #=============================================================================#
 # generate_arduino_library(name
-#      [BOARD board_id]
+#      [BOARD board_name]
+#      [BOARD_CPU board_cpu]
 #      [SRCS  src1 src2 ... srcN]
 #      [HDRS  hdr1 hdr2 ... hdrN]
 #      [LIBS  lib1 lib2 ... libN]
@@ -113,19 +118,20 @@
 #
 # The arguments are as follows:
 #
-#      name           # The name of the firmware target         [REQUIRED]
-#      BOARD          # Board name (such as uno, mega2560, ...) [REQUIRED]
-#      SRCS           # Sources                                 [REQUIRED]
-#      HDRS           # Headers 
+#      name           # The name of the firmware target               [REQUIRED]
+#      BOARD          # Board name (such as uno, mega2560, ...)       [REQUIRED]
+#      BOARD_CPU      # Board cpu (such as atmega328, atmega168, ...) [REQUIRED when BOARD has multiple versions]
+#      SRCS           # Sources                                       [REQUIRED]
+#      HDRS           # Headers
 #      LIBS           # Libraries to link
 #      NO_AUTOLIBS    # Disables Arduino library detection
 #      MANUAL         # (Advanced) Only use AVR Libc/Includes
 #
 # Here is a short example for a target named test:
-#    
+#
 #       generate_arduino_library(
 #           NAME test
-#           SRCS test.cpp 
+#           SRCS test.cpp
 #                test2.cpp
 #           HDRS test.h test2.h
 #           BOARD uno)
@@ -142,7 +148,8 @@
 #
 #=============================================================================#
 # generate_avr_library(name
-#      [BOARD board_id]
+#      [BOARD board_name]
+#      [BOARD_CPU board_cpu]
 #      [SRCS  src1 src2 ... srcN]
 #      [HDRS  hdr1 hdr2 ... hdrN]
 #      [LIBS  lib1 lib2 ... libN])
@@ -152,17 +159,18 @@
 #
 # The arguments are as follows:
 #
-#      name           # The name of the firmware target         [REQUIRED]
-#      BOARD          # Board name (such as uno, mega2560, ...) [REQUIRED]
-#      SRCS           # Sources                                 [REQUIRED]
-#      HDRS           # Headers 
+#      name           # The name of the firmware target               [REQUIRED]
+#      BOARD          # Board name (such as uno, mega2560, ...)       [REQUIRED]
+#      BOARD_CPU      # Board cpu (such as atmega328, atmega168, ...) [REQUIRED when BOARD has multiple versions]
+#      SRCS           # Sources                                       [REQUIRED]
+#      HDRS           # Headers
 #      LIBS           # Libraries to link
 #
 # Here is a short example for a target named test:
-#    
+#
 #       generate_avr_library(
 #           NAME test
-#           SRCS test.cpp 
+#           SRCS test.cpp
 #                test2.cpp
 #           HDRS test.h test2.h
 #           BOARD uno)
@@ -181,17 +189,19 @@
 # generate_arduino_example(name
 #                          LIBRARY library_name
 #                          EXAMPLE example_name
-#                          [BOARD  board_id]
+#                          BOARD  board_name
+#                          BOARD_CPU  board_cpu
 #                          [PORT port]
 #                          [SERIAL serial command]
 #                          [PORGRAMMER programmer_id]
 #                          [AFLAGS avrdude_flags])
 #=============================================================================#
 #
-#        name         - The name of the library example        [REQUIRED]
-#        LIBRARY      - Library name                           [REQUIRED]
-#        EXAMPLE      - Example name                           [REQUIRED]
-#        BOARD        - Board ID
+#        name         - The name of the library example                 [REQUIRED]
+#        LIBRARY      - Library name                                    [REQUIRED]
+#        EXAMPLE      - Example name                                    [REQUIRED]
+#        BOARD          # Board name (such as uno, mega2560, ...)       [REQUIRED]
+#        BOARD_CPU      # Board cpu (such as atmega328, atmega168, ...) [REQUIRED when BOARD has multiple versions]
 #        PORT         - Serial port [optional]
 #        SERIAL       - Serial command [optional]
 #        PROGRAMMER   - Programmer id (enables programmer support)
@@ -224,7 +234,7 @@
 # print_board_settings(ARDUINO_BOARD)
 #=============================================================================#
 #
-#        ARDUINO_BOARD - Board id
+#        ARDUINO_BOARD - Board name
 #
 # Print the detected Arduino board settings.
 #
@@ -248,7 +258,7 @@
 #            |-- variants/
 #            |-- boards.txt
 #            `-- programmers.txt
-#            
+#
 #  The boards.txt describes the target boards and bootloaders. While
 #  programmers.txt the programmer defintions.
 #
@@ -376,7 +386,7 @@ function(GENERATE_ARDUINO_LIBRARY INPUT_NAME)
     message(STATUS "Generating ${INPUT_NAME}")
     parse_generator_arguments(${INPUT_NAME} INPUT
             "NO_AUTOLIBS;MANUAL"                  # Options
-            "BOARD"                               # One Value Keywords
+            "BOARD;BOARD_CPU"                     # One Value Keywords
             "SRCS;HDRS;LIBS"                      # Multi Value Keywords
             ${ARGN})
 
@@ -388,11 +398,13 @@ function(GENERATE_ARDUINO_LIBRARY INPUT_NAME)
     endif ()
     required_variables(VARS INPUT_SRCS INPUT_BOARD MSG "must define for target ${INPUT_NAME}")
 
+    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
+
     set(ALL_LIBS)
     set(ALL_SRCS ${INPUT_SRCS} ${INPUT_HDRS})
 
     if (NOT INPUT_MANUAL)
-        setup_arduino_core(CORE_LIB ${INPUT_BOARD})
+        setup_arduino_core(CORE_LIB ${BOARD_ID})
     endif ()
 
     find_arduino_libraries(TARGET_LIBS "${ALL_SRCS}" "")
@@ -402,14 +414,14 @@ function(GENERATE_ARDUINO_LIBRARY INPUT_NAME)
     endforeach ()
 
     if (NOT ${INPUT_NO_AUTOLIBS})
-        setup_arduino_libraries(ALL_LIBS ${INPUT_BOARD} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
+        setup_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
     endif ()
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
     add_library(${INPUT_NAME} ${ALL_SRCS})
 
-    get_arduino_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${INPUT_BOARD} ${INPUT_MANUAL})
+    get_arduino_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} ${INPUT_MANUAL})
 
     set_target_properties(${INPUT_NAME} PROPERTIES
             COMPILE_FLAGS "${ARDUINO_COMPILE_FLAGS} ${COMPILE_FLAGS} ${LIB_DEP_INCLUDES}"
@@ -427,7 +439,7 @@ function(GENERATE_AVR_LIBRARY INPUT_NAME)
     message(STATUS "Generating ${INPUT_NAME}")
     parse_generator_arguments(${INPUT_NAME} INPUT
             "NO_AUTOLIBS;MANUAL"                  # Options
-            "BOARD"                               # One Value Keywords
+            "BOARD;BOARD_CPU"                     # One Value Keywords
             "SRCS;HDRS;LIBS"                      # Multi Value Keywords
             ${ARGN})
 
@@ -456,6 +468,7 @@ function(GENERATE_AVR_LIBRARY INPUT_NAME)
             NO_AUTOLIBS
             MANUAL
             BOARD ${INPUT_BOARD}
+            BOARD_CPU ${INPUT_BOARD_CPU}
             SRCS ${INPUT_SRCS}
             ${INPUT_HDRS}
             ${INPUT_LIBS})
@@ -471,7 +484,7 @@ function(GENERATE_ARDUINO_FIRMWARE INPUT_NAME)
     message(STATUS "Generating ${INPUT_NAME}")
     parse_generator_arguments(${INPUT_NAME} INPUT
             "NO_AUTOLIBS;MANUAL"                  # Options
-            "BOARD;PORT;SKETCH;PROGRAMMER"        # One Value Keywords
+            "BOARD;PORT;SKETCH;PROGRAMMER;BOARD_CPU"        # One Value Keywords
             "SERIAL;SRCS;HDRS;LIBS;ARDLIBS;AFLAGS"  # Multi Value Keywords
             ${ARGN})
 
@@ -491,13 +504,14 @@ function(GENERATE_ARDUINO_FIRMWARE INPUT_NAME)
         set(INPUT_MANUAL FALSE)
     endif ()
     required_variables(VARS INPUT_BOARD MSG "must define for target ${INPUT_NAME}")
+    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
 
     set(ALL_LIBS)
     set(ALL_SRCS ${INPUT_SRCS} ${INPUT_HDRS})
     set(LIB_DEP_INCLUDES)
 
     if (NOT INPUT_MANUAL)
-        setup_arduino_core(CORE_LIB ${INPUT_BOARD})
+        setup_arduino_core(CORE_LIB ${BOARD_ID})
     endif ()
 
     if (NOT "${INPUT_SKETCH}" STREQUAL "")
@@ -520,7 +534,7 @@ function(GENERATE_ARDUINO_FIRMWARE INPUT_NAME)
     endforeach ()
 
     if (NOT INPUT_NO_AUTOLIBS)
-        setup_arduino_libraries(ALL_LIBS ${INPUT_BOARD} "${ALL_SRCS}" "${TARGET_LIBS}" "${LIB_DEP_INCLUDES}" "")
+        setup_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "${TARGET_LIBS}" "${LIB_DEP_INCLUDES}" "")
         foreach (LIB_INCLUDES ${ALL_LIBS_INCLUDES})
             arduino_debug_msg("Arduino Library Includes: ${LIB_INCLUDES}")
             set(LIB_DEP_INCLUDES "${LIB_DEP_INCLUDES} ${LIB_INCLUDES}")
@@ -529,10 +543,10 @@ function(GENERATE_ARDUINO_FIRMWARE INPUT_NAME)
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
-    setup_arduino_target(${INPUT_NAME} ${INPUT_BOARD} "${ALL_SRCS}" "${ALL_LIBS}" "${LIB_DEP_INCLUDES}" "" "${INPUT_MANUAL}")
+    setup_arduino_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}" "${LIB_DEP_INCLUDES}" "" "${INPUT_MANUAL}")
 
     if (INPUT_PORT)
-        setup_arduino_upload(${INPUT_BOARD} ${INPUT_NAME} ${INPUT_PORT} "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
+        setup_arduino_upload(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT} "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
     endif ()
 
     if (INPUT_SERIAL)
@@ -551,7 +565,7 @@ function(GENERATE_AVR_FIRMWARE INPUT_NAME)
     message(STATUS "Generating ${INPUT_NAME}")
     parse_generator_arguments(${INPUT_NAME} INPUT
             "NO_AUTOLIBS;MANUAL"            # Options
-            "BOARD;PORT;PROGRAMMER"  # One Value Keywords
+            "BOARD;PORT;PROGRAMMER;BOARD_CPU"  # One Value Keywords
             "SERIAL;SRCS;HDRS;LIBS;AFLAGS"  # Multi Value Keywords
             ${ARGN})
 
@@ -584,6 +598,7 @@ function(GENERATE_AVR_FIRMWARE INPUT_NAME)
             NO_AUTOLIBS
             MANUAL
             BOARD ${INPUT_BOARD}
+            BOARD_CPU ${INPUT_BOARD_CPU}
             PORT ${INPUT_PORT}
             PROGRAMMER ${INPUT_PROGRAMMER}
             SERIAL ${INPUT_SERIAL}
@@ -602,7 +617,7 @@ endfunction()
 function(GENERATE_ARDUINO_EXAMPLE INPUT_NAME)
     parse_generator_arguments(${INPUT_NAME} INPUT
             ""                                       # Options
-            "CATEGORY;EXAMPLE;BOARD;PORT;PROGRAMMER"  # One Value Keywords
+            "CATEGORY;EXAMPLE;BOARD;PORT;PROGRAMMER;BOARD_CPU"  # One Value Keywords
             "SERIAL;AFLAGS"                          # Multi Value Keywords
             ${ARGN})
 
@@ -622,12 +637,14 @@ function(GENERATE_ARDUINO_EXAMPLE INPUT_NAME)
     required_variables(VARS INPUT_EXAMPLE INPUT_BOARD
             MSG "must define for target ${INPUT_NAME}")
 
+    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
+
     message(STATUS "Generating ${INPUT_NAME}")
 
     set(ALL_LIBS)
     set(ALL_SRCS)
 
-    setup_arduino_core(CORE_LIB ${INPUT_BOARD})
+    setup_arduino_core(CORE_LIB ${BOARD_ID})
 
     SETUP_ARDUINO_EXAMPLE("${INPUT_NAME}" "${INPUT_EXAMPLE}" ALL_SRCS "${INPUT_CATEGORY}")
 
@@ -641,14 +658,14 @@ function(GENERATE_ARDUINO_EXAMPLE INPUT_NAME)
         set(LIB_DEP_INCLUDES "${LIB_DEP_INCLUDES} -I\"${LIB_DEP}\"")
     endforeach ()
 
-    setup_arduino_libraries(ALL_LIBS ${INPUT_BOARD} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
+    setup_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
-    setup_arduino_target(${INPUT_NAME} ${INPUT_BOARD} "${ALL_SRCS}" "${ALL_LIBS}" "${LIB_DEP_INCLUDES}" "" FALSE)
+    setup_arduino_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}" "${LIB_DEP_INCLUDES}" "" FALSE)
 
     if (INPUT_PORT)
-        setup_arduino_upload(${INPUT_BOARD} ${INPUT_NAME} ${INPUT_PORT} "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
+        setup_arduino_upload(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT} "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
     endif ()
 
     if (INPUT_SERIAL)
@@ -664,7 +681,7 @@ endfunction()
 function(GENERATE_ARDUINO_LIBRARY_EXAMPLE INPUT_NAME)
     parse_generator_arguments(${INPUT_NAME} INPUT
             ""                                       # Options
-            "LIBRARY;EXAMPLE;BOARD;PORT;PROGRAMMER"  # One Value Keywords
+            "LIBRARY;EXAMPLE;BOARD;PORT;PROGRAMMER;BOARD_CPU"  # One Value Keywords
             "SERIAL;AFLAGS"                          # Multi Value Keywords
             ${ARGN})
 
@@ -682,13 +699,14 @@ function(GENERATE_ARDUINO_LIBRARY_EXAMPLE INPUT_NAME)
     endif ()
     required_variables(VARS INPUT_LIBRARY INPUT_EXAMPLE INPUT_BOARD
             MSG "must define for target ${INPUT_NAME}")
+    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
 
     message(STATUS "Generating ${INPUT_NAME}")
 
     set(ALL_LIBS)
     set(ALL_SRCS)
 
-    setup_arduino_core(CORE_LIB ${INPUT_BOARD})
+    setup_arduino_core(CORE_LIB ${BOARD_ID})
 
     find_arduino_libraries(TARGET_LIBS "" "${INPUT_LIBRARY}")
     set(LIB_DEP_INCLUDES)
@@ -703,16 +721,16 @@ function(GENERATE_ARDUINO_LIBRARY_EXAMPLE INPUT_NAME)
         message(FATAL_ERROR "Missing sources for example, aborting!")
     endif ()
 
-    setup_arduino_libraries(ALL_LIBS ${INPUT_BOARD} "${ALL_SRCS}" "${TARGET_LIBS}"
+    setup_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "${TARGET_LIBS}"
             "${LIB_DEP_INCLUDES}" "")
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
-    setup_arduino_target(${INPUT_NAME} ${INPUT_BOARD} "${ALL_SRCS}" "${ALL_LIBS}"
+    setup_arduino_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}"
             "${LIB_DEP_INCLUDES}" "" FALSE)
 
     if (INPUT_PORT)
-        setup_arduino_upload(${INPUT_BOARD} ${INPUT_NAME} ${INPUT_PORT}
+        setup_arduino_upload(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT}
                 "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
     endif ()
 
@@ -732,6 +750,7 @@ endfunction()
 # see documentation at top
 #=============================================================================#
 function(REGISTER_HARDWARE_PLATFORM PLATFORM_PATH)
+
     string(REGEX REPLACE "/$" "" PLATFORM_PATH ${PLATFORM_PATH})
     GET_FILENAME_COMPONENT(PLATFORM ${PLATFORM_PATH} NAME)
 
@@ -996,6 +1015,7 @@ function(LOAD_ARDUINO_STYLE_SETTINGS SETTINGS_LIST SETTINGS_PATH)
                 string(REGEX MATCH "[^=]+$" SETTING_VALUE ${FILE_ENTRY})
                 string(REPLACE "." ";" ENTRY_NAME_TOKENS ${SETTING_NAME})
                 string(STRIP "${SETTING_VALUE}" SETTING_VALUE)
+                string(REGEX MATCH "\\.menu\\.cpu\\." MENUS ${SETTING_NAME})
 
                 list(LENGTH ENTRY_NAME_TOKENS ENTRY_NAME_TOKENS_LEN)
 
@@ -1118,7 +1138,7 @@ endfunction()
 #=============================================================================#
 function(setup_arduino_core VAR_NAME BOARD_ID)
     set(CORE_LIB_NAME ${BOARD_ID}_CORE)
-    set(BOARD_CORE ${${BOARD_ID}.build.core})
+    _get_board_property(${BOARD_ID} build.core BOARD_CORE)
     if (BOARD_CORE)
         if (NOT TARGET ${CORE_LIB_NAME})
             set(BOARD_CORE_PATH ${${BOARD_CORE}.path})
@@ -1297,11 +1317,12 @@ function(setup_arduino_target TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
             COMMENT "Generating HEX image"
             VERBATIM)
 
+    _get_board_property(${BOARD_ID} build.mcu MCU)
     # Display target size
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND}
             ARGS -DFIRMWARE_IMAGE=${TARGET_PATH}.elf
-            -DMCU=${${BOARD_ID}.build.mcu}
+            -DMCU=${MCU}
             -DEEPROM_IMAGE=${TARGET_PATH}.eep
             -P ${ARDUINO_SIZE_SCRIPT}
             COMMENT "Calculating image size"
@@ -1311,7 +1332,7 @@ function(setup_arduino_target TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
     add_custom_target(${TARGET_NAME}-size
             COMMAND ${CMAKE_COMMAND}
             -DFIRMWARE_IMAGE=${TARGET_PATH}.elf
-            -DMCU=${${BOARD_ID}.build.mcu}
+            -DMCU=${MCU}
             -DEEPROM_IMAGE=${TARGET_PATH}.eep
             -P ${ARDUINO_SIZE_SCRIPT}
             DEPENDS ${TARGET_NAME}
@@ -1402,7 +1423,7 @@ endfunction()
 #      PROGRAMMER  - programmer id
 #      PORT        - serial port
 #      AVRDUDE_FLAGS - avrdude flags (override)
-# 
+#
 # Sets up target for burning firmware via a programmer.
 #
 # The target for burning the firmware is ${TARGET_NAME}-burn .
@@ -1438,7 +1459,7 @@ endfunction()
 # [PRIVATE/INTERNAL]
 #
 # setup_arduino_bootloader_burn(TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
-# 
+#
 #      TARGET_NAME - name of target to burn
 #      BOARD_ID    - board id
 #      PROGRAMMER  - programmer id
@@ -1463,94 +1484,57 @@ function(setup_arduino_bootloader_burn TARGET_NAME BOARD_ID PROGRAMMER PORT AVRD
     endif ()
 
     # look at bootloader.file
-    set(BOOTLOADER_FOUND True)
-    if (NOT ${BOARD_ID}.bootloader.file)
-        set(BOOTLOADER_FOUND False)
-        # Bootloader is probably defined in the 'menu' settings of the Arduino 1.6 SDK
-        if (${BOARD_ID}.build.mcu)
-            GET_MCU(${${BOARD_ID}.build.mcu} BOARD_MCU)
-            if (NOT ${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.file)
-                message("Missing ${BOARD_ID}.bootloader.file, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
-                return()
-            endif ()
-            set(BOOTLOADER_FOUND True)
-            set(${BOARD_ID}.bootloader.file ${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.file)
-        endif ()
-    endif ()
-
-    if (NOT ${BOOTLOADER_FOUND})
+    _get_board_property_if_exists(${BOARD_ID} bootloader.file BOOTLOADER_FILE)
+    if (NOT BOOTLOADER_FILE)
+        message("Missing bootloader.file, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
         return()
-    endif ()
+    endif()
+
 
     # build bootloader.path from bootloader.file...
-    string(REGEX MATCH "(.+/)*" ${BOARD_ID}.bootloader.path ${${BOARD_ID}.bootloader.file})
-    string(REGEX REPLACE "/" "" ${BOARD_ID}.bootloader.path ${${BOARD_ID}.bootloader.path})
+    string(REGEX MATCH "(.+/)*" BOOTLOADER_PATH ${BOOTLOADER_FILE})
+    string(REGEX REPLACE "/" "" BOOTLOADER_PATH ${BOOTLOADER_PATH})
     # and fix bootloader.file
-    string(REGEX MATCH "/.(.+)$" ${BOARD_ID}.bootloader.file ${${BOARD_ID}.bootloader.file})
-    string(REGEX REPLACE "/" "" ${BOARD_ID}.bootloader.file ${${BOARD_ID}.bootloader.file})
+    string(REGEX MATCH "/.(.+)$" BOOTLOADER_FILE_NAME ${BOOTLOADER_FILE})
+    string(REGEX REPLACE "/" "" BOOTLOADER_FILE_NAME ${BOOTLOADER_FILE_NAME})
 
-    foreach (ITEM unlock_bits high_fuses low_fuses path file)
-        if (NOT ${BOARD_ID}.bootloader.${ITEM})
-            # Try the 'menu' settings of the Arduino 1.6 SDK
-            if (NOT ${BOARD_ID}.menu.cpu.{BOARD_MCU}.bootloader.${ITEM})
-                message("Missing ${BOARD_ID}.bootloader.${ITEM}, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
-                return()
-            endif ()
-        endif ()
-    endforeach ()
-
-    if (NOT EXISTS "${ARDUINO_BOOTLOADERS_PATH}/${${BOARD_ID}.bootloader.path}/${${BOARD_ID}.bootloader.file}")
-        message("${ARDUINO_BOOTLOADERS_PATH}/${${BOARD_ID}.bootloader.path}/${${BOARD_ID}.bootloader.file}")
-        message("Missing bootloader image, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
+    if (NOT EXISTS "${ARDUINO_BOOTLOADERS_PATH}/${BOOTLOADER_PATH}/${BOOTLOADER_FILE_NAME}")
+        message("Missing bootloader image '${ARDUINO_BOOTLOADERS_PATH}/${BOOTLOADER_PATH}/${BOOTLOADER_FILE_NAME}', not creating bootloader burn target ${BOOTLOADER_TARGET}.")
         return()
     endif ()
+
+    #check for required bootloader parameters
+    foreach (ITEM lock_bits unlock_bits high_fuses low_fuses)
+        #do not make fatal error if field doesn't exists, just don't create bootloader burn target
+        _get_board_property_if_exists(${BOARD_ID} bootloader.${ITEM} BOOTLOADER_${ITEM})
+        if (NOT BOOTLOADER_${ITEM})
+            message("Missing bootloader.${ITEM}, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
+            return()
+        endif ()
+    endforeach ()
 
     # Erase the chip
     list(APPEND AVRDUDE_ARGS "-e")
 
     # Set unlock bits and fuses (because chip is going to be erased)
+    list(APPEND AVRDUDE_ARGS "-Ulock:w:${BOOTLOADER_unlock_bits}:m")
+    # extended fuses is optional
+    _get_board_property_if_exists(${BOARD_ID} bootloader.extended_fuses BOOTLOADER_extended_fuses)
+    if (BOOTLOADER_extended_fuses)
+        list(APPEND AVRDUDE_ARGS "-Uefuse:w:${BOOTLOADER_extended_fuses}:m")
+    endif()
 
-    if (${BOARD_ID}.bootloader.unlock_bits)
-        list(APPEND AVRDUDE_ARGS "-Ulock:w:${${BOARD_ID}.bootloader.unlock_bits}:m")
-    else ()
-        # Arduino 1.6 SDK
-        list(APPEND AVRDUDE_ARGS
-                "-Ulock:w:${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.unlock_bits}:m")
-    endif ()
-
-    if (${BOARD_ID}.bootloader.extended_fuses)
-        list(APPEND AVRDUDE_ARGS "-Uefuse:w:${${BOARD_ID}.bootloader.extended_fuses}:m")
-    elseif (${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.extended_fuses})
-        list(APPEND AVRDUDE_ARGS
-                "-Uefuse:w:${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.extended_fuses}:m")
-    endif ()
-    if (${BOARD_ID}.bootloader.high_fuses)
-        list(APPEND AVRDUDE_ARGS
-                "-Uhfuse:w:${${BOARD_ID}.bootloader.high_fuses}:m"
-                "-Ulfuse:w:${${BOARD_ID}.bootloader.low_fuses}:m")
-    else ()
-        list(APPEND AVRDUDE_ARGS
-                "-Uhfuse:w:${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.high_fuses}:m"
-                "-Ulfuse:w:${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.low_fuses}:m")
-    endif ()
-
-    # Set bootloader image
-    list(APPEND AVRDUDE_ARGS "-Uflash:w:${${BOARD_ID}.bootloader.file}:i")
-
-    # Set lockbits
-    if (${BOARD_ID}.bootloader.lock_bits)
-        list(APPEND AVRDUDE_ARGS "-Ulock:w:${${BOARD_ID}.bootloader.lock_bits}:m")
-    else ()
-        list(APPEND AVRDUDE_ARGS
-                "-Ulock:w:${${BOARD_ID}.menu.cpu.${BOARD_MCU}.bootloader.lock_bits}:m")
-    endif ()
-
+    list(APPEND AVRDUDE_ARGS
+            "-Uhfuse:w:${BOOTLOADER_high_fuses}:m"
+            "-Ulfuse:w:${BOOTLOADER_low_fuses}:m"
+            "-Uflash:w:${BOOTLOADER_FILE_NAME}:i"
+            "-Ulock:w:${BOOTLOADER_lock_bits}:m")
 
     # Create burn bootloader target
     add_custom_target(${BOOTLOADER_TARGET}
             ${ARDUINO_AVRDUDE_PROGRAM}
             ${AVRDUDE_ARGS}
-            WORKING_DIRECTORY ${ARDUINO_BOOTLOADERS_PATH}/${${BOARD_ID}.bootloader.path}
+            WORKING_DIRECTORY ${ARDUINO_BOOTLOADERS_PATH}/${BOOTLOADER_PATH}
             DEPENDS ${TARGET_NAME})
 endfunction()
 
@@ -1601,8 +1585,8 @@ function(setup_arduino_programmer_args BOARD_ID PROGRAMMER TARGET_NAME PORT AVRD
     if (${PROGRAMMER}.delay)
         list(APPEND AVRDUDE_ARGS "-i${${PROGRAMMER}.delay}") # Set delay
     endif ()
-
-    list(APPEND AVRDUDE_ARGS "-p${${BOARD_ID}.build.mcu}")  # MCU Type
+    _get_board_property(${BOARD_ID} build.mcu MCU)
+    list(APPEND AVRDUDE_ARGS "-p${MCU}")  # MCU Type
 
     list(APPEND AVRDUDE_ARGS ${AVRDUDE_FLAGS})
 
@@ -1629,36 +1613,22 @@ function(setup_arduino_bootloader_args BOARD_ID TARGET_NAME PORT AVRDUDE_FLAGS O
     if (NOT AVRDUDE_FLAGS)
         set(AVRDUDE_FLAGS ${ARDUINO_AVRDUDE_FLAGS})
     endif ()
-
+    _get_board_property(${BOARD_ID} build.mcu MCU)
     list(APPEND AVRDUDE_ARGS
             "-C${ARDUINO_AVRDUDE_CONFIG_PATH}"  # avrdude config
-            "-p${${BOARD_ID}.build.mcu}"        # MCU Type
+            "-p${MCU}"        # MCU Type
             )
 
     # Programmer
-    if (NOT ${BOARD_ID}.upload.protocol OR ${BOARD_ID}.upload.protocol STREQUAL "stk500")
+    _get_board_property(${BOARD_ID} upload.protocol UPLOAD_PROTOCOL)
+    if (${UPLOAD_PROTOCOL} STREQUAL "stk500")
         list(APPEND AVRDUDE_ARGS "-cstk500v1")
     else ()
-        list(APPEND AVRDUDE_ARGS "-c${${BOARD_ID}.upload.protocol}")
+        list(APPEND AVRDUDE_ARGS "-c${UPLOAD_PROTOCOL}")
     endif ()
 
-    set(UPLOAD_SPEED "19200") # Set a default speed
-    if (${BOARD_ID}.upload.speed)
-        set(UPLOAD_SPEED ${${BOARD_ID}.upload.speed})
-    else ()
-        # Speed wasn't manually set, and is not defined in the simple board settings
-        # The only option left is to search in the 'menu' settings of the Arduino 1.6 SDK
-        list(FIND ${BOARD_ID}.SETTINGS menu MENU_SETTINGS)
-        # Determine upload speed based on the defined cpu architecture (mcu)
-        if (${BOARD_ID}.build.mcu)
-            GET_MCU(${${BOARD_ID}.build.mcu} BOARD_MCU)
-            list(FIND ${BOARD_ID}.menu.CPUS ${BOARD_MCU} BOARD_MCU_INDEX)
-            if (BOARD_MCU_INDEX GREATER -1) # Matching mcu is found
-                set(UPLOAD_SPEED ${${BOARD_ID}.menu.cpu.${BOARD_MCU}.upload.speed})
-            endif ()
-        endif ()
-    endif ()
 
+    _get_board_property(${BOARD_ID} upload.speed UPLOAD_SPEED)
     list(APPEND AVRDUDE_ARGS
             "-b${UPLOAD_SPEED}"     # Baud rate
             "-P${PORT}"             # Serial port
@@ -2256,7 +2226,7 @@ endfunction()
 #=============================================================================#
 function(get_arduino_flags COMPILE_FLAGS_VAR LINK_FLAGS_VAR BOARD_ID MANUAL)
 
-    set(BOARD_CORE ${${BOARD_ID}.build.core})
+    _get_board_property(${BOARD_ID} build.core BOARD_CORE)
     if (BOARD_CORE)
         if (ARDUINO_SDK_VERSION MATCHES "([0-9]+)[.]([0-9]+)")
             string(REPLACE "." "" ARDUINO_VERSION_DEFINE "${ARDUINO_SDK_VERSION}") # Normalize version (remove all periods)
@@ -2272,14 +2242,17 @@ function(get_arduino_flags COMPILE_FLAGS_VAR LINK_FLAGS_VAR BOARD_ID MANUAL)
         else ()
             message("Invalid Arduino SDK Version (${ARDUINO_SDK_VERSION})")
         endif ()
-
+        _get_board_property(${BOARD_ID} build.f_cpu FCPU)
+        _get_board_property(${BOARD_ID} build.mcu MCU)
         # output
-        set(COMPILE_FLAGS "-DF_CPU=${${BOARD_ID}.build.f_cpu} -DARDUINO=${ARDUINO_VERSION_DEFINE} -mmcu=${${BOARD_ID}.build.mcu}")
-        if (DEFINED ${BOARD_ID}.build.vid)
-            set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_VID=${${BOARD_ID}.build.vid}")
+        set(COMPILE_FLAGS "-DF_CPU=${FCPU} -DARDUINO=${ARDUINO_VERSION_DEFINE} -mmcu=${MCU}")
+        _get_board_property_if_exists(${BOARD_ID} build.vid VID)
+        _get_board_property_if_exists(${BOARD_ID} build.pid PID)
+        if (VID)
+            set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_VID=${VID}")
         endif ()
-        if (DEFINED ${BOARD_ID}.build.pid)
-            set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_PID=${${BOARD_ID}.build.pid}")
+        if (PID)
+            set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_PID=${PID}")
         endif ()
         if (NOT MANUAL)
             set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${${BOARD_CORE}.path}\" -I\"${ARDUINO_LIBRARIES_PATH}\"")
@@ -2287,10 +2260,11 @@ function(get_arduino_flags COMPILE_FLAGS_VAR LINK_FLAGS_VAR BOARD_ID MANUAL)
                 set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${ARDUINO_PLATFORM_LIBRARIES_PATH}\"")
             endif ()
         endif ()
-        set(LINK_FLAGS "-mmcu=${${BOARD_ID}.build.mcu}")
+        set(LINK_FLAGS "-mmcu=${MCU}")
         if (ARDUINO_SDK_VERSION VERSION_GREATER 1.0 OR ARDUINO_SDK_VERSION VERSION_EQUAL 1.0)
             if (NOT MANUAL)
-                set(PIN_HEADER ${${${BOARD_ID}.build.variant}.path})
+                _get_board_property(${BOARD_ID} build.variant VARIANT)
+                set(PIN_HEADER ${${VARIANT}.path})
                 if (PIN_HEADER)
                     set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${PIN_HEADER}\"")
                 endif ()
@@ -2408,6 +2382,96 @@ function(generate_sketch_cpp SKETCH_SOURCES SKETCH_CPP)
         file(APPEND ${SKETCH_CPP} "${SKETCH_SOURCE}")
         file(APPEND ${SKETCH_CPP} "\n//=== END : ${SKETCH_SOURCE_PATH}\n")
     endforeach ()
+endfunction()
+
+#=============================================================================#
+# _get_board_property
+# [PRIVATE/INTERNAL]
+#
+# _get_board_property(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+#
+#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
+#        OUT_VAR - variable holding value for the property
+#
+# Gets board property.
+# Reconstructs BOARD_NAME and BOARD_CPU from BOARD_ID and tries to find value at ${BOARD_NAME}.${PROPERTY_NAME},
+# if not found than try to find value at ${BOARD_NAME}.menu.cpu.${BOARD_CPU}.${PROPERTY_NAME}
+# if not found that show fatal error
+#=============================================================================#
+function(_GET_BOARD_PROPERTY BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+    string(REPLACE "." ";" BOARD_INFO ${BOARD_ID})
+    list(GET BOARD_INFO 0 BOARD_NAME)
+    set(VALUE ${${BOARD_NAME}.${PROPERTY_NAME}})
+    if(NOT VALUE)
+        list(LENGTH BOARD_INFO INFO_PARAMS_COUNT)
+        if (${INFO_PARAMS_COUNT} EQUAL 2)
+            list(GET BOARD_INFO 1 BOARD_CPU)
+            required_variables(VARS BOARD_CPU MSG "cannot find CPU info, must define BOARD_CPU.")
+            set(VALUE ${${BOARD_NAME}.menu.cpu.${BOARD_CPU}.${PROPERTY_NAME}})
+        endif()
+    endif()
+    if (NOT VALUE)
+        message(FATAL_ERROR "Board info not found: BoardName='${BOARD_NAME}' BoardCPU='${BOARD_CPU}' PropertyName='${PROPERTY_NAME}'")
+    endif()
+    set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
+endfunction()
+
+#=============================================================================#
+# _get_board_property_if_exists
+# [PRIVATE/INTERNAL]
+#
+# _get_board_property_if_exists(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+#
+#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
+#        OUT_VAR - variable holding value for the property
+#
+# Similar to _get_board_property, except it returns empty value if value was not found.
+#=============================================================================#
+function(_GET_BOARD_PROPERTY_IF_EXISTS BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+    string(REPLACE "." ";" BOARD_INFO ${BOARD_ID})
+    list(GET BOARD_INFO 0 BOARD_NAME)
+    set(VALUE ${${BOARD_NAME}.${PROPERTY_NAME}})
+    if(NOT VALUE)
+        list(LENGTH BOARD_INFO INFO_PARAMS_COUNT)
+        if (${INFO_PARAMS_COUNT} EQUAL 2)
+            list(GET BOARD_INFO 1 BOARD_CPU)
+            required_variables(VARS BOARD_CPU MSG "cannot find CPU info, must define BOARD_CPU.")
+            set(VALUE ${${BOARD_NAME}.menu.cpu.${BOARD_CPU}.${PROPERTY_NAME}})
+        endif()
+    endif()
+    set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
+endfunction()
+
+#=============================================================================#
+# _get_board_id
+# [PRIVATE/INTERNAL]
+#
+# _get_board_id(BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
+#
+#        BOARD_NAME - name of the board, eg.: nano, uno, etc...
+#        BOARD_CPU - come boards has multiple versions with different cpus, eg.: nano has atmega168 and atmega328
+#        TARGET_NAME - name of the build target, used to show clearer error message
+#        OUT_VAR - BOARD_ID constructed from BOARD_NAME and BOARD_CPU
+#
+# returns BOARD_ID constructing from BOARD_NAME and BOARD_CPU, if board doesn't has multiple cpus then BOARD_ID = BOARD_NAME
+# if board has multiple CPUS, and BOARD_CPU is not defined or incorrect, fatal error will be invoked.
+#=============================================================================#
+function(_GET_BOARD_ID BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
+    if (${BOARD_NAME}.menu.CPUS)
+        if (BOARD_CPU)
+            LIST(FIND ${BOARD_NAME}.menu.CPUS ${BOARD_CPU} CPU_INDEX)
+            if (CPU_INDEX EQUAL -1)
+                message(FATAL_ERROR "Invalid BOARD_CPU (valid cpus: ${${BOARD_NAME}.menu.CPUS}).")
+            endif()
+        else()
+            message(FATAL_ERROR "Board has multiple CPU versions (${${BOARD_NAME}.menu.CPUS}). BOARD_CPU must be defined for target ${TARGET_NAME}.")
+        endif()
+        set(${OUTPUT_VAR} ${BOARD_NAME}.${BOARD_CPU} PARENT_SCOPE)
+    else()
+        set(${OUTPUT_VAR} ${BOARD_NAME} PARENT_SCOPE)
+    endif()
 endfunction()
 
 #=============================================================================#
@@ -2547,7 +2611,7 @@ endfunction()
 #                        Initialization Script
 #=============================================================================#
 #=============================================================================#
-#                              C Flags                                        
+#                              C Flags
 #=============================================================================#
 if (NOT DEFINED ARDUINO_C_FLAGS)
     set(ARDUINO_C_FLAGS "-mcall-prologues -ffunction-sections -fdata-sections")
@@ -2559,7 +2623,7 @@ set(CMAKE_C_FLAGS_RELEASE "-Os -DNDEBUG -w ${ARDUINO_C_FLAGS}" CACHE STRING "")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO "-Os -g       -w ${ARDUINO_C_FLAGS}" CACHE STRING "")
 
 #=============================================================================#
-#                             C++ Flags                                       
+#                             C++ Flags
 #=============================================================================#
 if (NOT DEFINED ARDUINO_CXX_FLAGS)
     set(ARDUINO_CXX_FLAGS "${ARDUINO_C_FLAGS} -fno-exceptions")
@@ -2598,7 +2662,7 @@ set(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO "${ARDUINO_LINKER_FLAGS}" CACHE STR
 
 
 #=============================================================================#
-#                         Arduino Settings                                    
+#                         Arduino Settings
 #=============================================================================#
 set(ARDUINO_OBJCOPY_EEP_FLAGS -O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load
         --no-change-warnings --change-section-lma .eeprom=0 CACHE STRING "")
@@ -2606,7 +2670,7 @@ set(ARDUINO_OBJCOPY_HEX_FLAGS -O ihex -R .eeprom CACHE STRING "")
 set(ARDUINO_AVRDUDE_FLAGS -V CACHE STRING "")
 
 #=============================================================================#
-#                          Initialization                                     
+#                          Initialization
 #=============================================================================#
 if (NOT ARDUINO_FOUND AND ARDUINO_SDK_PATH)
 
@@ -2716,7 +2780,7 @@ if (NOT ARDUINO_FOUND AND ARDUINO_SDK_PATH)
     #print_board_list()
     #print_programmer_list()
 
-    set(ARDUINO_FOUND True CACHE INTERNAL "Arduino Found")
+    set(ARDUINO_FOUND True Cache "Arduino Found")
     mark_as_advanced(
             ARDUINO_CORES_PATH
             ARDUINO_VARIANTS_PATH

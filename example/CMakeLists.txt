@@ -101,17 +101,18 @@ generate_arduino_library(blink_lib
 #====================================================================#
 # Advanced firwmare example
 #====================================================================#
-set(nano.build.mcu "atmega328p")
 generate_arduino_firmware(blink
         SRCS blink.cpp
         LIBS blink_lib
         BOARD nano
+        BOARD_CPU atmega328
         PORT com4)
 
 # Alternative: by variables
 #set(blink_SRCS blink.cpp)
 #set(blink_LIBS blink_lib)
-#set(blink_BOARD uno)
+#set(blink_BOARD nano)
+#set(blink_BOARD_CPU atmega328)
 #
 #generate_arduino_firmware(blink)
 
@@ -121,11 +122,13 @@ generate_arduino_firmware(blink
 GENERATE_ARDUINO_FIRMWARE(serial_lib
         SRCS serial.cpp
         ARDLIBS SoftwareSerial
-        BOARD uno)
+        BOARD_CPU atmega2560
+        BOARD mega)
 
 # Alternative: by variables
 #set(blink_SRCS serial.cpp)
 #set(blink_ARDLIBS SoftwareSerial)
-#set(blink_BOARD uno)
+#set(blink_BOARD mega)
+#set(blink_BOARD_CPU atmega2560)
 #
 #generate_arduino_firmware(blink)
