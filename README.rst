@@ -918,6 +918,30 @@ This section will outlines some of the additional miscellaneous functions availa
   
   A good example of a *Hardware Platform* is in the Arduino SDK: ``${ARDUINO_SDK_PATH}/hardware/arduino/``
 
+* **register_hardware_platform_bva(BASE_PATH VENDOR_ID ARCHITECTURE_ID)**:
+
+        *BASE_PATH*         - Hardware platform path
+        *VENDOR_ID*         - The vendor id (e.g. arduino)
+        *ARCHITECTURE_ID*   - The architecture id (e.g. avr)
+
+ Registers a ``Hardware Platform`` path. See: `Arduino Platforms PRE 1.5`_ and `Arduino Platforms 1.5`_.
+
+ A Hardware Platform is a directory containing the following::
+
+        BASE_PATH/VENDOR_ID/ARCHITECTURE_ID/
+            |-- bootloaders/
+            |-- cores/
+            |-- variants/
+            |-- boards.txt
+            `-- programmers.txt
+  
+  This enables you to register new types of hardware platforms such as the
+  Sagnuino, without having to copy the files into your Arduino SDK.
+
+  The ``board.txt`` describes the target boards and bootloaders. While
+  ``programmers.txt`` the programmer defintions.
+  
+  A good example of a *Hardware Platform* is in the Arduino SDK: ``${ARDUINO_SDK_PATH}/hardware/arduino/avr``
 
 .. _Arduino Platforms PRE 1.5: http://code.google.com/p/arduino/wiki/Platforms
 .. _Arduino Platforms 1.5: http://code.google.com/p/arduino/wiki/Platforms1
