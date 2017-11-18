@@ -257,6 +257,36 @@
 #        ${ARDUINO_SDK_PATH}/hardware/arduino/
 #
 #=============================================================================#
+# register_hardware_platform_bva(BASE_PATH VENDOR_ID ARCHITECTURE_ID)
+#=============================================================================#
+#
+#        BASE_PATH         - Hardware platform path
+#        VENDOR_ID         - The vendor id (e.g. arduino)
+#        ARCHITECTURE_ID   - The architecture id (e.g. avr)
+#
+# Registers a Hardware Platform path.
+# See: http://code.google.com/p/arduino/wiki/Platforms
+#
+# This enables you to register new types of hardware platforms such as the
+# Sagnuino, without having to copy the files into your Arduino SDK.
+#
+# A Hardware Platform is a directory containing the following:
+#
+#        BASE_PATH/VENDOR_ID/ARCHITECTURE_ID/
+#            |-- bootloaders/
+#            |-- cores/
+#            |-- variants/
+#            |-- boards.txt
+#            `-- programmers.txt
+#            
+#  The boards.txt describes the target boards and bootloaders. While
+#  programmers.txt the programmer defintions.
+#
+#  A good example of a Hardware Platform is in the Arduino SDK:
+#
+#        ${ARDUINO_SDK_PATH}/hardware/arduino/avr
+#
+#=============================================================================#
 # Configuration Options
 #=============================================================================#
 #
@@ -741,12 +771,25 @@ endfunction()
 #=============================================================================#
 function(REGISTER_HARDWARE_PLATFORM PLATFORM_PATH)
     string(REGEX REPLACE "/$" "" PLATFORM_PATH ${PLATFORM_PATH})
-    GET_FILENAME_COMPONENT(PLATFORM ${PLATFORM_PATH} NAME)
+    GET_FILENAME_COMPONENT(VENDOR_ID ${PLATFORM_PATH} NAME)
+    GET_FILENAME_COMPONENT(BASE_PATH ${PLATFORM_PATH} PATH)
+    
+    # The legacy default behavior is to assume avr as architecture
+    register_hardware_platform_bva("${BASE_PATH}" "${VENDOR_ID}" "avr")
 
-    # platform path changed in versions 1.5 and greater
-    if (ARDUINO_SDK_VERSION VERSION_GREATER 1.0.5)
-        set(PLATFORM_PATH "${PLATFORM_PATH}/avr")
-    endif ()
+endfunction()
+
+#=============================================================================#
+# REGISTER_HARDWARE_PLATFORM_BVA
+# [PUBLIC/USER]
+# see documentation at top
+#=============================================================================#
+function(REGISTER_HARDWARE_PLATFORM_BVA BASE_PATH VENDOR_ID ARCHITECTURE_ID)
+    
+    set(PLATFORM_PATH "${BASE_PATH}/${VENDOR_ID}/${ARCHITECTURE_ID}")
+    
+    # Preserve original behavior...
+    set(PLATFORM "${VENDOR_ID}")
 
     if (PLATFORM)
         # Avoid defining a platform multiple times if it has already been defined before
@@ -819,6 +862,14 @@ function(REGISTER_HARDWARE_PLATFORM PLATFORM_PATH)
                         get_filename_component(core ${dir} NAME)
                         set(CORES ${CORES} ${core} CACHE INTERNAL "A list of registered cores")
                         set(${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
+                        
+                        # See https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#referencing-another-core-variant-or-tool
+                        # for an explanation why cores must also be available as <vendor_id>:<core_id>
+                        # and <vendor_id>:<architecture_id>:<core_id>
+                        set(CORES ${CORES} "${VENDOR_ID}:${core}" CACHE INTERNAL "A list of registered cores")
+                        set(${VENDOR_ID}:${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
+                        set(CORES ${CORES} "${VENDOR_ID}:${ARCHITECTURE_ID}:${core}" CACHE INTERNAL "A list of registered cores")
+                        set(${VENDOR_ID}:${ARCHITECTURE_ID}:${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
                     endif ()
                 endforeach ()
             endif ()
@@ -826,7 +877,6 @@ function(REGISTER_HARDWARE_PLATFORM PLATFORM_PATH)
     endif ()
 
 endfunction()
-
 
 #=============================================================================#
 #                         Internal Functions
