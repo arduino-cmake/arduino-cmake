@@ -1169,8 +1169,8 @@ set(SD_RECURSE True)
 
 function(setup_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAGS)
 
-    set(ARDUINO_CMAKE_RECURSION_DEFAULT FALSE CACHE BOOL 
-"The default recursion behavior during library setup")
+    set(ARDUINO_CMAKE_RECURSION_DEFAULT FALSE CACHE BOOL
+            "The default recursion behavior during library setup")
 
     string(REGEX REPLACE "/src/?$" "" LIB_PATH_STRIPPED ${LIB_PATH})
     get_filename_component(LIB_NAME ${LIB_PATH_STRIPPED} NAME)
@@ -1214,7 +1214,7 @@ function(setup_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLA
                 list(REMOVE_ITEM LIB_TARGETS ${TARGET_LIB_NAME})
             endif ()
             target_link_libraries(${TARGET_LIB_NAME} ${BOARD_ID}_CORE ${LIB_TARGETS})
-            
+
             list(APPEND LIB_TARGETS ${TARGET_LIB_NAME})
 
         endif ()
@@ -2091,31 +2091,29 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
     if (ARDUINO_LIBS)
         list(REMOVE_DUPLICATES ARDUINO_LIBS)
     endif ()
-    
+
     remove_blacklisted_arduino_libs(ARDUINO_LIBS)
-    
+
     set(${VAR_NAME} ${ARDUINO_LIBS} PARENT_SCOPE)
 endfunction()
 
-function(remove_blacklisted_arduino_libs
-   arduino_libs_var_
-)
-   set(ARDUINO_CMAKE_BLACKLISTED_ARDUINO_LIBS "" CACHE STRING
-"A list of absolute paths to Arduino libraries that are meant to be ignored \
+function(remove_blacklisted_arduino_libs arduino_libs_var_)
+    set(ARDUINO_CMAKE_BLACKLISTED_ARDUINO_LIBS "" CACHE STRING
+            "A list of absolute paths to Arduino libraries that are meant to be ignored \
 during library search")
 
-   set(old_libs "${${arduino_libs_var_}}")
-   set(new_libs)
-   foreach(lib ${old_libs})
-      list (FIND ARDUINO_CMAKE_BLACKLISTED_ARDUINO_LIBS "${lib}" _index)
-      if(NOT ${_index} GREATER -1)
-         list(APPEND new_libs "${lib}")
-      else()
-         ARDUINO_DEBUG_MSG("Suppressing blacklisted library ${lib}")
-      endif()
-   endforeach()
+    set(old_libs "${${arduino_libs_var_}}")
+    set(new_libs)
+    foreach (lib ${old_libs})
+        list(FIND ARDUINO_CMAKE_BLACKLISTED_ARDUINO_LIBS "${lib}" _index)
+        if (NOT ${_index} GREATER -1)
+            list(APPEND new_libs "${lib}")
+        else ()
+            ARDUINO_DEBUG_MSG("Suppressing blacklisted library ${lib}")
+        endif ()
+    endforeach ()
 
-   set("${arduino_libs_var_}" "${new_libs}" PARENT_SCOPE)
+    set("${arduino_libs_var_}" "${new_libs}" PARENT_SCOPE)
 endfunction()
 #=============================================================================#
 # find_sources
