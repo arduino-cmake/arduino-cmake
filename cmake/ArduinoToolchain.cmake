@@ -72,7 +72,7 @@ if ((NOT ARDUINO_SDK_PATH) AND (NOT DEFINED ENV{_ARDUINO_CMAKE_WORKAROUND_ARDUIN
 
     find_path(ARDUINO_SDK_PATH
               NAMES lib/version.txt
-              PATH_SUFFIXES share/arduino Arduino.app/Contents/Resources/Java/ ${ARDUINO_PATHS}
+              PATH_SUFFIXES share/arduino Arduino.app/Contents/Resources/Java/ Arduino.app/Contents/Java/ ${ARDUINO_PATHS}
               HINTS ${SDK_PATH_HINTS}
               DOC "Arduino SDK base directory")
 elseif ((NOT ARDUINO_SDK_PATH) AND (DEFINED ENV{_ARDUINO_CMAKE_WORKAROUND_ARDUINO_SDK_PATH}))
