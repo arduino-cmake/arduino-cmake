@@ -21,10 +21,8 @@ function(make_core_library OUTPUT_VAR BOARD_ID)
             # Debian/Ubuntu fix
             list(REMOVE_ITEM CORE_SRCS "${BOARD_CORE_PATH}/main.cxx")
             add_library(${CORE_LIB_NAME} ${CORE_SRCS})
-            set_board_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} FALSE)
-            set_target_properties(${CORE_LIB_NAME} PROPERTIES
-                    COMPILE_FLAGS "${ARDUINO_COMPILE_FLAGS}"
-                    LINK_FLAGS "${ARDUINO_LINK_FLAGS}")
+            _set_board_compile_flags(${CORE_LIB_NAME} ${BOARD_ID} "" FALSE)
+            _set_board_link_flags(${CORE_LIB_NAME} ${BOARD_ID} "")
         endif ()
         set(${OUTPUT_VAR} ${CORE_LIB_NAME} PARENT_SCOPE)
     endif ()

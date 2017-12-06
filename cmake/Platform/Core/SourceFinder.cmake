@@ -15,21 +15,21 @@ function(find_sources VAR_NAME LIB_PATH RECURSE)
     set(FILE_SEARCH_LIST
             ${LIB_PATH}/*.cpp
             ${LIB_PATH}/*.c
-            ${LIB_PATH}/*.s
-            ${LIB_PATH}/*.S
             ${LIB_PATH}/*.cc
             ${LIB_PATH}/*.cxx
             ${LIB_PATH}/*.h
             ${LIB_PATH}/*.hh
-            ${LIB_PATH}/*.hxx)
+            ${LIB_PATH}/*.hxx
+            ${LIB_PATH}/*.[sS]
+            )
 
     if (RECURSE)
-        file(GLOB_RECURSE LIB_FILES ${FILE_SEARCH_LIST})
+        file(GLOB_RECURSE SOURCE_FILES ${FILE_SEARCH_LIST})
     else ()
-        file(GLOB LIB_FILES ${FILE_SEARCH_LIST})
+        file(GLOB SOURCE_FILES ${FILE_SEARCH_LIST})
     endif ()
 
-    if (LIB_FILES)
-        set(${VAR_NAME} ${LIB_FILES} PARENT_SCOPE)
+    if (SOURCE_FILES)
+        set(${VAR_NAME} ${SOURCE_FILES} PARENT_SCOPE)
     endif ()
 endfunction()

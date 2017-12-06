@@ -4,7 +4,7 @@
 #
 # find_arduino_libraries(VAR_NAME SRCS ARDLIBS)
 #
-#      VAR_NAME - Variable name which will hold the results
+#      VAR_NAME - Variable name which will hold paths of arduino libraries
 #      SRCS     - Sources that will be analized
 #      ARDLIBS  - Arduino libraries identified by name (e.g., Wire, SPI, Servo)
 #
@@ -85,10 +85,6 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                 endif ()
                 file(STRINGS ${SRC} SRC_CONTENTS)
 
-                foreach (LIBNAME ${ARDLIBS})
-                    list(APPEND SRC_CONTENTS "#include <${LIBNAME}.h>")
-                endforeach ()
-
                 foreach (SRC_LINE ${SRC_CONTENTS})
                     if ("${SRC_LINE}" MATCHES
                             "^[ \t]*#[ \t]*include[ \t]*[<\"]([^>\"]*)[>\"]")
@@ -97,13 +93,15 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                         get_property(LIBRARY_SEARCH_PATH
                                 DIRECTORY     # Property Scope
                                 PROPERTY LINK_DIRECTORIES)
-                        foreach (LIB_SEARCH_PATH ${LIBRARY_SEARCH_PATH} ${ARDUINO_LIBRARIES_PATH} ${ARDUINO_PLATFORM_LIBRARIES_PATH} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/libraries ${ARDUINO_EXTRA_LIBRARIES_PATH})
+                        foreach (LIB_SEARCH_PATH ${LIBRARY_SEARCH_PATH}
+                                ${ARDUINO_LIBRARIES_PATH}
+                                ${ARDUINO_PLATFORM_LIBRARIES_PATH}
+                                ${CMAKE_CURRENT_SOURCE_DIR}
+                                ${CMAKE_CURRENT_SOURCE_DIR}/libraries
+                                ${ARDUINO_EXTRA_LIBRARIES_PATH})
+
                             if (EXISTS ${LIB_SEARCH_PATH}/${INCLUDE_NAME}/${CMAKE_MATCH_1})
                                 list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${INCLUDE_NAME})
-                                break()
-                            endif ()
-                            if (EXISTS ${LIB_SEARCH_PATH}/${CMAKE_MATCH_1})
-                                list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH})
                                 break()
                             endif ()
 
@@ -112,10 +110,7 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                                 list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${INCLUDE_NAME}/src)
                                 break()
                             endif ()
-                            if (EXISTS ${LIB_SEARCH_PATH}/src/${CMAKE_MATCH_1})
-                                list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/src)
-                                break()
-                            endif ()
+
                         endforeach ()
 
                     endif ()

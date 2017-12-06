@@ -7,13 +7,13 @@
 #=============================================================================#
 set(CMAKE_TOOLCHAIN_FILE cmake/ArduinoToolchain.cmake) # Arduino Toolchain
 
-
 cmake_minimum_required(VERSION 2.8)
 #====================================================================#
 #  Setup Project                                                     #
 #====================================================================#
-project(ArduinoExample C CXX)
+project(ArduinoExample C CXX ASM)
 
+set(CMAKE_CXX_STANDARD 11)
 print_board_list()
 print_programmer_list()
 
