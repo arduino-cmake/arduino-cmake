@@ -5,6 +5,7 @@
 set(PLATFORM_PATH "${BASE_PATH}/${VENDOR_ID}/${PLATFORM_ARCHITECTURE}")
 set(PLATFORM "${VENDOR_ID}")
 set(ARCHITECTURE_ID ${PLATFORM_ARCHITECTURE})
+string(TOUPPER ${ARCHITECTURE_ID} ARCHITECTURE_ID)
 
 # Avoid defining a platform multiple times if it has already been defined before
 string(TOUPPER ${PLATFORM} PLATFORM)
@@ -70,8 +71,12 @@ if (${PLATFORM}_VARIANTS_PATH)
     foreach (dir ${sub-dir})
         if (IS_DIRECTORY ${dir})
             get_filename_component(variant ${dir} NAME)
-            set(VARIANTS ${VARIANTS} ${variant} CACHE INTERNAL "A list of registered variant boards")
+            # See https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#referencing-another-core-variant-or-tool
+            # for an explanation why variants must also be available as <vendor_id>:<variant>
+            set(VARIANTS ${VARIANTS} "${variant};${VENDOR_ID}:${variant}" CACHE INTERNAL "A list of registered variant boards")
+
             set(${variant}.path ${dir} CACHE INTERNAL "The path to the variant ${variant}")
+            set(${VENDOR_ID}:${variant}.path ${dir} CACHE INTERNAL "The path to the variant ${variant}")
         endif ()
     endforeach ()
 endif ()
@@ -81,16 +86,16 @@ if (${PLATFORM}_CORES_PATH)
     foreach (dir ${sub-dir})
         if (IS_DIRECTORY ${dir})
             get_filename_component(core ${dir} NAME)
-            set(CORES ${CORES} ${core} CACHE INTERNAL "A list of registered cores")
-            set(${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
-
             # See https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#referencing-another-core-variant-or-tool
             # for an explanation why cores must also be available as <vendor_id>:<core_id>
-            # and <vendor_id>:<architecture_id>:<core_id>
-            set(CORES ${CORES} "${VENDOR_ID}:${core}" CACHE INTERNAL "A list of registered cores")
-            set(${VENDOR_ID}:${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
-            set(CORES ${CORES} "${VENDOR_ID}:${ARCHITECTURE_ID}:${core}" CACHE INTERNAL "A list of registered cores")
+            set(CORES ${CORES} "${core};${VENDOR_ID}:${core}" CACHE INTERNAL "A list of registered cores")
 
+            set(${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
+            set(${VENDOR_ID}:${core}.path ${dir} CACHE INTERNAL "The path to the core ${core}")
+            # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#build-process
+            # arch is required to create ARDUINO_ARCH_<architecture> define flag.
+            set(${core}.arch ${ARCHITECTURE_ID} CACHE INTERNAL "The architecture of the core ${core}")
+            set(${VENDOR_ID}:${core}.arch ${ARCHITECTURE_ID} CACHE INTERNAL "The architecture of the core ${core}")
         endif ()
     endforeach ()
 endif ()

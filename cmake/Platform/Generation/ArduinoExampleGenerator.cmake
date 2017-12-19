@@ -41,17 +41,13 @@ function(GENERATE_ARDUINO_EXAMPLE INPUT_NAME)
         message(FATAL_ERROR "Missing sources for example, aborting!")
     endif ()
 
-    find_arduino_libraries(TARGET_LIBS "${ALL_SRCS}" "")
-    set(LIB_DEP_INCLUDES)
-    foreach (LIB_DEP ${TARGET_LIBS})
-        set(LIB_DEP_INCLUDES "${LIB_DEP_INCLUDES} -I\"${LIB_DEP}\"")
-    endforeach ()
+    find_arduino_libraries(ARDUINO_LIBS_PATHS "${ALL_SRCS}" "")
 
-    make_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
+    make_arduino_libraries(ALL_LIBS ALL_LIBS_INCLUDES ${BOARD_ID} "${ARDUINO_LIBS_PATHS}")
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
-    create_arduino_firmware_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}" "${LIB_DEP_INCLUDES}" "" FALSE)
+    create_arduino_firmware_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}" "${ALL_LIBS_INCLUDES}" FALSE)
 
     if (INPUT_PORT)
         create_arduino_upload_target(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT} "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")

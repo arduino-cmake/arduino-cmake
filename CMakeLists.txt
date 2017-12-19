@@ -14,6 +14,7 @@ cmake_minimum_required(VERSION 2.8)
 #====================================================================#
 project(ArduinoExample C CXX ASM)
 
+set(CMAKE_CXX_STANDARD 11)
 print_board_list()
 print_programmer_list()
 

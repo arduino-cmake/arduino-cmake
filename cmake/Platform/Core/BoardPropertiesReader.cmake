@@ -62,10 +62,10 @@ function(_GET_BOARD_PROPERTY BOARD_ID PROPERTY_NAME OUTPUT_VAR)
 endfunction()
 
 #=============================================================================#
-# _get_board_property_if_exists
+# _try_get_board_property
 # [PRIVATE/INTERNAL]
 #
-# _get_board_property_if_exists(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+# _try_get_board_property(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
 #
 #        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
 #        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
@@ -86,4 +86,63 @@ function(_try_get_board_property BOARD_ID PROPERTY_NAME OUTPUT_VAR)
         endif()
     endif()
     set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
+endfunction()
+
+#=============================================================================#
+# _override_board_property
+# [PRIVATE/INTERNAL]
+#
+# _override_board_property(BOARD_ID PROPERTY_NAME NEW_VALUE CREATE_IF_NOT_EXISTS)
+#
+#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
+#        NEW_VALUE - override existing value with new value
+#        CREATE_IF_NOT_EXISTS - if true, then creates new value if not exists, otherwise show fatal error
+#
+# Overrides board property.
+# Finds property, and overrides its value.
+# If property doesn't exists, CREATE_IF_NOT_EXISTS controls if it should create new property or show fatal error.
+#=============================================================================#
+function(_OVERRIDE_BOARD_PROPERTY BOARD_ID PROPERTY_NAME NEW_VALUE CREATE_IF_NOT_EXISTS)
+    string(REPLACE "." ";" BOARD_INFO ${BOARD_ID})
+    list(LENGTH BOARD_INFO INFO_PARAMS_COUNT)
+    list(GET BOARD_INFO 0 BOARD_NAME)
+    _try_get_board_property(${BOARD_ID} ${PROPERTY_NAME} OLD_VALUE)
+    if (OLD_VALUE OR ${CREATE_IF_NOT_EXISTS})
+        set(FULL_PROP_NAME ${BOARD_NAME}.menu.cpu.${BOARD_CPU}.${PROPERTY_NAME})
+        if (NOT ${FULL_PROP_NAME})
+            set(FULL_PROP_NAME ${BOARD_NAME}.${PROPERTY_NAME})
+        endif()
+        set(${FULL_PROP_NAME} ${NEW_VALUE} CACHE INTERNAL "Property was overrided")
+    else()
+        message(FATAL_ERROR "Property ${PROPERTY_NAME} was not found for the board ${BOARD_ID}.")
+    endif()
+endfunction()
+
+#=============================================================================#
+# GENERATE_ARDUINO_FIRMWARE
+# [PUBLIC/USER]
+# see documentation at README
+#=============================================================================#
+function(OVERRIDE_USB_PROPERTIES)
+    parse_generator_arguments("" INPUT
+            "FORCE"                                     # Options
+            "BOARD;BOARD_CPU;VID;PID;PRODUCT;MANUFACTURER" # One Value Keywords
+            ""                                     # Multi Value Keywords
+            ${ARGN})
+    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" "" BOARD_ID)
+    if (INPUT_VID)
+        _override_board_property(${BOARD_ID} build.vid ${INPUT_VID} ${INPUT_FORCE})
+    endif()
+    if (INPUT_PID)
+        _override_board_property(${BOARD_ID} build.pid ${INPUT_PID} ${INPUT_FORCE})
+    endif()
+    if (INPUT_PRODUCT)
+        #escape value because it is used as a string
+        _override_board_property(${BOARD_ID} build.usb_product \"${INPUT_PRODUCT}\" ${INPUT_FORCE})
+    endif()
+    if (INPUT_MANUFACTURER)
+        #escape value because it is used as a string
+        _override_board_property(${BOARD_ID} build.usb_manufacturer \"${INPUT_MANUFACTURER}\" ${INPUT_FORCE})
+    endif()
 endfunction()

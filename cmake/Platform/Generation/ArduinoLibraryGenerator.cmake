@@ -28,25 +28,15 @@ function(GENERATE_ARDUINO_LIBRARY INPUT_NAME)
         make_core_library(CORE_LIB ${BOARD_ID})
     endif ()
 
-    find_arduino_libraries(TARGET_LIBS "${ALL_SRCS}" "")
-    set(LIB_DEP_INCLUDES)
-    foreach (LIB_DEP ${TARGET_LIBS})
-        set(LIB_DEP_INCLUDES "${LIB_DEP_INCLUDES} -I\"${LIB_DEP}\"")
-    endforeach ()
+    find_arduino_libraries(ARDUINO_LIBS_PATHS "${ALL_SRCS}" "")
 
     if (NOT ${INPUT_NO_AUTOLIBS})
-        make_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
+        make_arduino_libraries(ALL_LIBS ALL_LIBS_INCLUDES ${BOARD_ID} "${ARDUINO_LIBS_PATHS}")
     endif ()
-
-    list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
     add_library(${INPUT_NAME} ${ALL_SRCS})
 
-    set_board_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} ${INPUT_MANUAL})
-
-    set_target_properties(${INPUT_NAME} PROPERTIES
-            COMPILE_FLAGS "${ARDUINO_COMPILE_FLAGS} ${COMPILE_FLAGS} ${LIB_DEP_INCLUDES}"
-            LINK_FLAGS "${ARDUINO_LINK_FLAGS} ${LINK_FLAGS}")
-
-    target_link_libraries(${INPUT_NAME} ${ALL_LIBS} "-lc -lm")
+    list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS} -lc -lm)
+    _set_board_compile_flags(${INPUT_NAME} ${BOARD_ID} "${ALL_LIBS_INCLUDES}" ${INPUT_MANUAL})
+    _set_board_link_flags(${INPUT_NAME} ${BOARD_ID} "${ALL_LIBS}")
 endfunction()
