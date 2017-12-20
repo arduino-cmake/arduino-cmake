@@ -41,7 +41,7 @@ endfunction()
 #
 #=============================================================================#
 function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
-   while(${PROPERTY_VALUE_VAR} MATCHES "[^\$]{([^}]*)}")
+   while("${${PROPERTY_VALUE_VAR}}" MATCHES "[^\$]{([^}]*)}")
       set(variable "${CMAKE_MATCH_1}")
       if("${variable}" MATCHES "${BOARD_ID}\.([^}]*)")
          _get_board_property(${BOARD_ID} ${CMAKE_MATCH_1} repl_string)
