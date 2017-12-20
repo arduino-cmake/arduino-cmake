@@ -59,8 +59,11 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
             if (LIB_TARGETS)
                 list(REMOVE_ITEM LIB_TARGETS ${TARGET_LIB_NAME})
             endif ()
-
-            target_link_libraries(${TARGET_LIB_NAME} ${BOARD_ID}_CORE ${LIB_TARGETS})
+            
+            if(NOT ARDUINO_CMAKE_GENERATE_SHARED_LIBRARIES)
+                target_link_libraries(${TARGET_LIB_NAME} ${BOARD_ID}_CORE ${LIB_TARGETS})
+            endif()
+            
             list(APPEND LIB_TARGETS ${TARGET_LIB_NAME})
 
         endif ()
