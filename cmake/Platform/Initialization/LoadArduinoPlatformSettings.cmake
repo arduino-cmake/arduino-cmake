@@ -58,11 +58,20 @@ if (NOT ${SETTINGS_LIST} AND EXISTS ${SETTINGS_PATH})
     foreach (FILE_ENTRY ${FILE_ENTRIES})
         if ("${FILE_ENTRY}" MATCHES "^[^#]+=.*")
             string(REGEX MATCH "^[^=]+" SETTING_NAME ${FILE_ENTRY})
-            string(REGEX MATCH "[^=]+$" SETTING_VALUE ${FILE_ENTRY})
+            
+            # Allow for values to contain =
+            string(REGEX REPLACE "^[^=]+=(.*)" "\\1" SETTING_VALUE "${FILE_ENTRY}")
+            
             string(REPLACE "." ";" ENTRY_NAME_TOKENS ${SETTING_NAME})
             string(STRIP "${SETTING_VALUE}" SETTING_VALUE)
 
             list(LENGTH ENTRY_NAME_TOKENS ENTRY_NAME_TOKENS_LEN)
+            
+            # Some setting files contain settings such as "name"
+            # that come without separators
+            if("${ENTRY_NAME_TOKENS_LEN}" LESS 2)
+                continue()
+            endif()
 
             # Add entry to settings list if it does not exist
             list(GET ENTRY_NAME_TOKENS 0 ENTRY_NAME)
