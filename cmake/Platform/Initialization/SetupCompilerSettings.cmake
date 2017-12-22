@@ -54,7 +54,9 @@ endfunction()
 # Setups some basic flags for the gcc linker to use when linking executables.
 #=============================================================================#
 function(setup_exe_linker_flags)
-    set(ARDUINO_LINKER_FLAGS "-Wl,--gc-sections -lm")
+    if (NOT DEFINED ARDUINO_LINKER_FLAGS)
+        set(ARDUINO_LINKER_FLAGS "-Wl,--gc-sections -lm")
+    endif()
     set(CMAKE_EXE_LINKER_FLAGS "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
     set(CMAKE_EXE_LINKER_FLAGS_MINSIZEREL "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
