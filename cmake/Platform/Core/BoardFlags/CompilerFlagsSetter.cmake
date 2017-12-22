@@ -14,14 +14,14 @@ function(set_board_compiler_flags COMPILER_FLAGS NORMALIZED_SDK_VERSION BOARD_ID
         set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_PID=${PID}")
     endif ()
     
-    _get_board_property(${BOARD_ID} build.extra_flags EXTRA_FLAGS)
-    string(REPLACE "\"" "\\\"" EXTRA_FLAGS "${EXTRA_FLAGS}")
+    _try_get_board_property(${BOARD_ID} build.extra_flags EXTRA_FLAGS)
 
     if(NOT "${EXTRA_FLAGS}" STREQUAL "")
+        string(REPLACE "\"" "\\\"" EXTRA_FLAGS "${EXTRA_FLAGS}")
         set(COMPILE_FLAGS "${COMPILE_FLAGS} ${EXTRA_FLAGS}")
     endif()
     
-    _get_board_property(${BOARD_ID} build.usb_flags USB_FLAGS)
+    _try_get_board_property(${BOARD_ID} build.usb_flags USB_FLAGS)
     if(NOT "${USB_FLAGS}" STREQUAL "")
         set(COMPILE_FLAGS "${COMPILE_FLAGS} ${USB_FLAGS}")
     endif()
