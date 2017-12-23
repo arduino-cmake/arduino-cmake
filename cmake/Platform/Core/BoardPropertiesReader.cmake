@@ -41,11 +41,24 @@ endfunction()
 #
 #=============================================================================#
 function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
+
+   # The following regular expressions looks for arduino property references 
+   # that are {property_name} the [^\$] part is just there to ensure that 
+   # something like ${foo} is not matched as it could be a shell variable 
+   # or a cmake variable or whatever, but not a Arduino property.
+   #
    while("${${PROPERTY_VALUE_VAR}}" MATCHES "[^\$]{([^}]*)}")
       set(variable "${CMAKE_MATCH_1}")
+      
+      # The following regular expression checks if the property (variable) 
+      # that was referenced is one of a board.
+      #
       if("${variable}" MATCHES "${BOARD_ID}\.([^}]*)")
          _get_board_property(${BOARD_ID} ${CMAKE_MATCH_1} repl_string)
       elseif(NOT "${${variable}}" STREQUAL "")
+         # If it's not a board property, we try to find the variable 
+         # at global scope.
+         #
          set(repl_string "${${variable}}")
       endif()
       
