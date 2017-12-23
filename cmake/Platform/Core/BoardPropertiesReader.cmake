@@ -29,6 +29,47 @@ function(_GET_BOARD_ID BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
 endfunction()
 
 #=============================================================================#
+# _recursively_replace_properties
+# [PRIVATE/INTERNAL]
+#
+# _recursively_replace_properties(BOARD_ID PROPERTY_VALUE_VAR)
+#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        PROPERTY_VALUE_VAR - the value of a property that may contain
+#           references to other properties.
+#
+# Recursively replaces references to other properties.
+#
+#=============================================================================#
+function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
+
+   # The following regular expressions looks for arduino property references 
+   # that are {property_name} the [^\$] part is just there to ensure that 
+   # something like ${foo} is not matched as it could be a shell variable 
+   # or a cmake variable or whatever, but not a Arduino property.
+   #
+   while("${${PROPERTY_VALUE_VAR}}" MATCHES "[^\$]{([^}]*)}")
+      set(variable "${CMAKE_MATCH_1}")
+      
+      # The following regular expression checks if the property (variable) 
+      # that was referenced is one of a board.
+      #
+      if("${variable}" MATCHES "${BOARD_ID}\.([^}]*)")
+         _get_board_property(${BOARD_ID} ${CMAKE_MATCH_1} repl_string)
+      elseif(NOT "${${variable}}" STREQUAL "")
+         # If it's not a board property, we try to find the variable 
+         # at global scope.
+         #
+         set(repl_string "${${variable}}")
+      endif()
+      
+      if(NOT "${repl_string}" STREQUAL "")
+         string(REGEX REPLACE "{${variable}}" "${repl_string}" ${PROPERTY_VALUE_VAR} "${${PROPERTY_VALUE_VAR}}")
+      endif()
+   endwhile()   
+   set(${PROPERTY_VALUE_VAR} "${${PROPERTY_VALUE_VAR}}" PARENT_SCOPE)
+endfunction()
+
+#=============================================================================#
 # _get_board_property
 # [PRIVATE/INTERNAL]
 #
@@ -58,6 +99,7 @@ function(_GET_BOARD_PROPERTY BOARD_ID PROPERTY_NAME OUTPUT_VAR)
     if (NOT VALUE)
         message(FATAL_ERROR "Board info not found: BoardName='${BOARD_NAME}' BoardCPU='${BOARD_CPU}' PropertyName='${PROPERTY_NAME}'")
     endif()
+    _recursively_replace_properties(${BOARD_ID} VALUE)
     set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
 endfunction()
 
