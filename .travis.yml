@@ -36,5 +36,6 @@ install:
   - cd build/
 script:
   - cmake -D ARDUINO_SDK_PATH="$ARDUINO_SDK_PATH" ..
-  - cat CMakeFiles/CMakeOutput.log
   - make
+after_script:
+  - cat CMakeFiles/CMakeOutput.log

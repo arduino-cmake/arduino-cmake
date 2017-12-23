@@ -12,3 +12,6 @@ indent_size = 4
 continuation_indent_size = 8
 
 trim_trailing_whitespace = true
+
+[*.{md,rst}]
+trim_trailing_whitespace = false
