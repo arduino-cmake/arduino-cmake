@@ -66,10 +66,8 @@ if (IS_SCRIPT_PROCESSED)
     return()
 endif ()
 
-# Define the 'RECURSE' flag for libraries known to depend on it
-# on each reload
-set(Wire_RECURSE True)
-set(Ethernet_RECURSE True)
-set(SD_RECURSE True)
+# Setup libraries known to be recursive only once
+include(SetupRecursiveLibraries)
 
-set(IS_SCRIPT_PROCESSED True)
+set(IS_SCRIPT_PROCESSED True CACHE BOOL
+        "Indicates whether platform script has already been processed")
