@@ -889,6 +889,8 @@ The following options control how **Arduino CMake** is configured:
 +---------------------------------+-----------------------------------------------------+
 | **ARDUINO_DEFAULT_BOARD**       | Default Arduino Board ID, when not specified.       |
 +---------------------------------+-----------------------------------------------------+
+| **ARDUINO_DEFAULT_BOARD_CPU**   | Default Arduino Board CPU, when not specified.      |
++---------------------------------+-----------------------------------------------------+
 | **ARDUINO_DEFAULT_PORT**        | Default Arduino port, when not specified.           |
 +---------------------------------+-----------------------------------------------------+
 | **ARDUINO_DEFAULT_SERIAL**      | Default Arduino Serial command, when not specified. |

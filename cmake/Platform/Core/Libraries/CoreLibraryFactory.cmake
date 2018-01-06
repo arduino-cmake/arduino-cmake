@@ -16,6 +16,13 @@ function(make_core_library OUTPUT_VAR BOARD_ID)
     _get_board_property(${BOARD_ID} build.core BOARD_CORE)
     if (BOARD_CORE)
         if (NOT TARGET ${CORE_LIB_NAME})
+
+            # The boards.txt file allows referencing a core from different vendor.
+            # Removing the vendor prefix allows the configuration to succeed if the
+            # <BOARD>_CORES_PATH is correctly set. For syntax details see:
+            # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#referencing-another-core-variant-or-tool
+            string(REGEX REPLACE "^.*:" "" BOARD_CORE ${BOARD_CORE})
+
             set(BOARD_CORE_PATH ${${BOARD_CORE}.path})
             find_sources(CORE_SRCS ${BOARD_CORE_PATH} True)
             # Debian/Ubuntu fix
