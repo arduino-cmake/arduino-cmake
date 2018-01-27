@@ -29,8 +29,18 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
         if (NOT DEFINED ${LIB_SHORT_NAME}_RECURSE)
             set(${LIB_SHORT_NAME}_RECURSE ${ARDUINO_CMAKE_RECURSION_DEFAULT})
         endif ()
+        
+        # As this function is used recursively, it is important to 
+        # clear the following variables that are potentially existent in parent scope
+        #
+        set(LIB_SRCS)
+        set(LIB_HDRS)
 
         find_sources(LIB_SRCS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
+        find_headers(LIB_HDRS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
+        
+        # Only build the library if there are source files
+        #
         if (LIB_SRCS)
 
             arduino_debug_msg("Generating Arduino ${LIB_NAME} library")
@@ -38,7 +48,9 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
 
             set_board_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} FALSE)
 
-            find_arduino_libraries(LIB_DEPS "${LIB_SRCS}" "")
+            # Find libraries that contain related sources and headers
+            #
+            find_arduino_libraries(LIB_DEPS "${LIB_SRCS};${LIB_HDRS}" "")
 
             foreach (LIB_DEP ${LIB_DEPS})
                 make_arduino_library(DEP_LIB_SRCS ${BOARD_ID} ${LIB_DEP}

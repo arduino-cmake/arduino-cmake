@@ -17,9 +17,6 @@ function(find_sources VAR_NAME LIB_PATH RECURSE)
             ${LIB_PATH}/*.c
             ${LIB_PATH}/*.cc
             ${LIB_PATH}/*.cxx
-            ${LIB_PATH}/*.h
-            ${LIB_PATH}/*.hh
-            ${LIB_PATH}/*.hxx
             ${LIB_PATH}/*.[sS]
             )
 
@@ -31,6 +28,37 @@ function(find_sources VAR_NAME LIB_PATH RECURSE)
 
     if (SOURCE_FILES)
         set(${VAR_NAME} ${SOURCE_FILES} PARENT_SCOPE)
+    endif ()
+endfunction()
+
+#=============================================================================#
+# find_headers
+# [PRIVATE/INTERNAL]
+#
+# find_headers(VAR_NAME LIB_PATH RECURSE)
+#
+#        VAR_NAME - Variable name that will hold the detected headers
+#        LIB_PATH - The base path
+#        RECURSE  - Whether or not to recurse
+#
+# Finds all C/C++ headers located at the specified path.
+#
+#=============================================================================#
+function(find_headers VAR_NAME LIB_PATH RECURSE)
+    set(FILE_SEARCH_LIST
+            ${LIB_PATH}/*.h
+            ${LIB_PATH}/*.hh
+            ${LIB_PATH}/*.hxx
+            )
+
+    if (RECURSE)
+        file(GLOB_RECURSE HEADER_FILES ${FILE_SEARCH_LIST})
+    else ()
+        file(GLOB HEADER_FILES ${FILE_SEARCH_LIST})
+    endif ()
+
+    if (HEADER_FILES)
+        set(${VAR_NAME} ${HEADER_FILES} PARENT_SCOPE)
     endif ()
 endfunction()
 
