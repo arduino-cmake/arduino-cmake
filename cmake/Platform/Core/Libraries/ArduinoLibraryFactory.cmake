@@ -29,6 +29,12 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
         if (NOT DEFINED ${LIB_SHORT_NAME}_RECURSE)
             set(${LIB_SHORT_NAME}_RECURSE ${ARDUINO_CMAKE_RECURSION_DEFAULT})
         endif ()
+        
+        # As this function is used recursively, it is important to 
+        # clear the following variables that are potentially existent in parent scope
+        #
+        set(LIB_SRCS)
+        set(LIB_HDRS)
 
         find_sources(LIB_SRCS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
         find_headers(LIB_HDRS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
