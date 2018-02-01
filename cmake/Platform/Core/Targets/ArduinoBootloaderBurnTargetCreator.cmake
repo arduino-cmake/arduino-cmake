@@ -1,8 +1,8 @@
 #=============================================================================#
-# create_arduino_bootloader_burn_target
+# CREATE_ARDUINO_BOOTLOADER_BURN_TARGET
 # [PRIVATE/INTERNAL]
 #
-# create_arduino_bootloader_burn_target(TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
+# CREATE_ARDUINO_BOOTLOADER_BURN_TARGET(TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
 #
 #      TARGET_NAME - name of target to burn
 #      BOARD_ID    - board id
@@ -15,12 +15,12 @@
 # The target for burning the bootloader is ${TARGET_NAME}-burn-bootloader
 #
 #=============================================================================#
-function(create_arduino_bootloader_burn_target TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
+function(CREATE_ARDUINO_BOOTLOADER_BURN_TARGET TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
     set(BOOTLOADER_TARGET ${TARGET_NAME}-burn-bootloader)
 
     set(AVRDUDE_ARGS)
 
-    build_arduino_programmer_arguments(${BOARD_ID} ${PROGRAMMER} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
+    BUILD_ARDUINO_PROGRAMMER_ARGUMENTS(${BOARD_ID} ${PROGRAMMER} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
 
     if (NOT AVRDUDE_ARGS)
         message("Could not generate default avrdude programmer args, aborting!")
@@ -28,7 +28,7 @@ function(create_arduino_bootloader_burn_target TARGET_NAME BOARD_ID PROGRAMMER P
     endif ()
 
     # look at bootloader.file
-    _try_get_board_property(${BOARD_ID} bootloader.file BOOTLOADER_FILE)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} bootloader.file BOOTLOADER_FILE)
     if (NOT BOOTLOADER_FILE)
         message("Missing bootloader.file, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
         return()
@@ -49,7 +49,7 @@ function(create_arduino_bootloader_burn_target TARGET_NAME BOARD_ID PROGRAMMER P
     #check for required bootloader parameters
     foreach (ITEM lock_bits unlock_bits high_fuses low_fuses)
         #do not make fatal error if field doesn't exists, just don't create bootloader burn target
-        _try_get_board_property(${BOARD_ID} bootloader.${ITEM} BOOTLOADER_${ITEM})
+        _TRY_GET_BOARD_PROPERTY(${BOARD_ID} bootloader.${ITEM} BOOTLOADER_${ITEM})
         if (NOT BOOTLOADER_${ITEM})
             message("Missing bootloader.${ITEM}, not creating bootloader burn target ${BOOTLOADER_TARGET}.")
             return()
@@ -62,7 +62,7 @@ function(create_arduino_bootloader_burn_target TARGET_NAME BOARD_ID PROGRAMMER P
     # Set unlock bits and fuses (because chip is going to be erased)
     list(APPEND AVRDUDE_ARGS "-Ulock:w:${BOOTLOADER_unlock_bits}:m")
     # extended fuses is optional
-    _try_get_board_property(${BOARD_ID} bootloader.extended_fuses BOOTLOADER_extended_fuses)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} bootloader.extended_fuses BOOTLOADER_extended_fuses)
     if (BOOTLOADER_extended_fuses)
         list(APPEND AVRDUDE_ARGS "-Uefuse:w:${BOOTLOADER_extended_fuses}:m")
     endif()

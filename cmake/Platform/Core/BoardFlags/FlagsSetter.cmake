@@ -2,10 +2,10 @@ include(CompilerFlagsSetter)
 include(LinkerFlagsSetter)
 
 #=============================================================================#
-# set_board_flags
+# SET_BOARD_FLAGS
 # [PRIVATE/INTERNAL]
 #
-# set_board_flags(COMPILER_FLAGS LINKER_FLAGS BOARD_ID IS_MANUAL)
+# SET_BOARD_FLAGS(COMPILER_FLAGS LINKER_FLAGS BOARD_ID IS_MANUAL)
 #
 #       COMPILER_FLAGS - Variable holding compiler flags
 #       LINKER_FLAGS - Variable holding linker flags
@@ -15,14 +15,14 @@ include(LinkerFlagsSetter)
 # Configures the build settings for the specified Arduino Board.
 #
 #=============================================================================#
-function(set_board_flags COMPILER_FLAGS LINKER_FLAGS BOARD_ID IS_MANUAL)
+function(SET_BOARD_FLAGS COMPILER_FLAGS LINKER_FLAGS BOARD_ID IS_MANUAL)
 
-    _get_board_property(${BOARD_ID} build.core BOARD_CORE)
+    _GET_BOARD_PROPERTY(${BOARD_ID} build.core BOARD_CORE)
     if (BOARD_CORE)
-        _get_normalized_sdk_version(NORMALIZED_SDK_VERSION)
+        _GET_NORMALIZED_SDK_VERSION(NORMALIZED_SDK_VERSION)
 
-        set_board_compiler_flags(COMPILE_FLAGS ${NORMALIZED_SDK_VERSION} ${BOARD_ID} ${IS_MANUAL})
-        set_board_linker_flags(LINK_FLAGS ${BOARD_ID} ${IS_MANUAL})
+        SET_BOARD_COMPILER_FLAGS(COMPILE_FLAGS ${NORMALIZED_SDK_VERSION} ${BOARD_ID} ${IS_MANUAL})
+        SET_BOARD_LINKER_FLAGS(LINK_FLAGS ${BOARD_ID} ${IS_MANUAL})
 
         # output
         set(${COMPILER_FLAGS} "${COMPILE_FLAGS}" PARENT_SCOPE)
@@ -35,10 +35,10 @@ function(set_board_flags COMPILER_FLAGS LINKER_FLAGS BOARD_ID IS_MANUAL)
 endfunction()
 
 #=============================================================================#
-# _get_normalized_sdk_version
+# _GET_NORMALIZED_SDK_VERSION
 # [PRIVATE/INTERNAL]
 #
-# _get_normalized_sdk_version(OUTPUT_VAR)
+# _GET_NORMALIZED_SDK_VERSION(OUTPUT_VAR)
 #
 #       OUTPUT_VAR - Returned variable storing the normalized version
 #
@@ -52,7 +52,7 @@ endfunction()
 #                                     e.g Version 0.20.0 will be normalized as 20
 #
 #=============================================================================#
-function(_get_normalized_sdk_version OUTPUT_VAR)
+function(_GET_NORMALIZED_SDK_VERSION OUTPUT_VAR)
 
     if (${ARDUINO_SDK_VERSION} VERSION_GREATER 1.5.8)
         # -DARDUINO format has changed since 1.6.0 by appending zeros when required,

@@ -1,8 +1,8 @@
 #=============================================================================#
-# make_arduino_library
+# MAKE_ARDUINO_LIBRARY
 # [PRIVATE/INTERNAL]
 #
-# make_arduino_library(VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAGS)
+# MAKE_ARDUINO_LIBRARY(VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAGS)
 #
 #        VAR_NAME    - Vairable wich will hold the generated library names
 #        BOARD_ID    - Board ID
@@ -16,7 +16,7 @@
 #      when looking for source files.
 #
 #=============================================================================#
-function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAGS)
+function(MAKE_ARDUINO_LIBRARY VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAGS)
 
     string(REGEX REPLACE "/src/?$" "" LIB_PATH_STRIPPED ${LIB_PATH})
     get_filename_component(LIB_NAME ${LIB_PATH_STRIPPED} NAME)
@@ -29,28 +29,28 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
        set(${LIB_SHORT_NAME}_RECURSE ${ARDUINO_CMAKE_RECURSION_DEFAULT})
     endif ()
 
-    # As make_arduino_library is called recursively, LIB_SRCS and LIB_HDRS
+    # As MAKE_ARDUINO_LIBRARY is called recursively, LIB_SRCS and LIB_HDRS
     # might be defined in parent scope and must therefore be cleared.
     #
     set(LIB_SRCS)
     set(LIB_HDRS)
     
-    find_sources(LIB_SRCS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
-    find_headers(LIB_HDRS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
+    FIND_SOURCES(LIB_SRCS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
+    FIND_HEADERS(LIB_HDRS ${LIB_PATH} ${${LIB_SHORT_NAME}_RECURSE})
     
     if (LIB_SRCS)
         
        if (NOT TARGET ${TARGET_LIB_NAME})
 
-            arduino_debug_msg("Generating Arduino ${LIB_NAME} library")
+            ARDUINO_DEBUG_MSG("Generating Arduino ${LIB_NAME} library")
             add_library(${TARGET_LIB_NAME} STATIC ${LIB_SRCS})
 
-            set_board_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} FALSE)
+            SET_BOARD_FLAGS(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} FALSE)
 
-            find_arduino_libraries(LIB_DEPS "${LIB_SRCS};${LIB_HDRS}" "")
+            FIND_ARDUINO_LIBRARIES(LIB_DEPS "${LIB_SRCS};${LIB_HDRS}" "")
 
             foreach (LIB_DEP ${LIB_DEPS})
-                make_arduino_library(DEP_LIB_SRCS ${BOARD_ID} ${LIB_DEP}
+                MAKE_ARDUINO_LIBRARY(DEP_LIB_SRCS ${BOARD_ID} ${LIB_DEP}
                         "${COMPILE_FLAGS}" "${LINK_FLAGS}")
                 list(APPEND LIB_TARGETS ${DEP_LIB_SRCS})
                 list(APPEND LIB_INCLUDES ${DEP_LIB_SRCS_INCLUDES})
@@ -97,10 +97,10 @@ function(make_arduino_library VAR_NAME BOARD_ID LIB_PATH COMPILE_FLAGS LINK_FLAG
 endfunction()
 
 #=============================================================================#
-# make_arduino_libraries
+# MAKE_ARDUINO_LIBRARIES
 # [PRIVATE/INTERNAL]
 #
-# make_arduino_libraries(VAR_NAME BOARD_ID SRCS COMPILE_FLAGS LINK_FLAGS)
+# MAKE_ARDUINO_LIBRARIES(VAR_NAME BOARD_ID SRCS COMPILE_FLAGS LINK_FLAGS)
 #
 #        VAR_NAME    - Vairable wich will hold the generated library names
 #        BOARD_ID    - Board ID
@@ -110,10 +110,10 @@ endfunction()
 # Finds and creates all dependency libraries based on sources.
 #
 #=============================================================================#
-function(make_arduino_libraries VAR_NAME BOARD_ID ARDLIBS COMPILE_FLAGS LINK_FLAGS)
+function(MAKE_ARDUINO_LIBRARIES VAR_NAME BOARD_ID ARDLIBS COMPILE_FLAGS LINK_FLAGS)
     foreach (TARGET_LIB ${ARDLIBS})
         # Create static library instead of returning sources
-        make_arduino_library(LIB_DEPS ${BOARD_ID} ${TARGET_LIB}
+        MAKE_ARDUINO_LIBRARY(LIB_DEPS ${BOARD_ID} ${TARGET_LIB}
                 "${COMPILE_FLAGS}" "${LINK_FLAGS}")
         list(APPEND LIB_TARGETS ${LIB_DEPS})
         list(APPEND LIB_INCLUDES ${LIB_DEPS_INCLUDES})

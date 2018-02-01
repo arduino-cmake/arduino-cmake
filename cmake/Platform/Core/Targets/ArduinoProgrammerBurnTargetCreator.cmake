@@ -1,8 +1,8 @@
 #=============================================================================#
-# create_arduino_programmer_burn_target
+# CREATE_ARDUINO_PROGRAMMER_BURN_TARGET
 # [PRIVATE/INTERNAL]
 #
-# create_arduino_programmer_burn_target(TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
+# CREATE_ARDUINO_PROGRAMMER_BURN_TARGET(TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
 #
 #      TARGET_NAME - name of target to burn
 #      BOARD_ID    - board id
@@ -15,12 +15,12 @@
 # The target for burning the firmware is ${TARGET_NAME}-burn .
 #
 #=============================================================================#
-function(create_arduino_programmer_burn_target TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
+function(CREATE_ARDUINO_PROGRAMMER_BURN_TARGET TARGET_NAME BOARD_ID PROGRAMMER PORT AVRDUDE_FLAGS)
     set(PROGRAMMER_TARGET ${TARGET_NAME}-burn)
 
     set(AVRDUDE_ARGS)
 
-    build_arduino_programmer_arguments(${BOARD_ID} ${PROGRAMMER} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
+    BUILD_ARDUINO_PROGRAMMER_ARGUMENTS(${BOARD_ID} ${PROGRAMMER} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
 
     if (NOT AVRDUDE_ARGS)
         message("Could not generate default avrdude programmer args, aborting!")

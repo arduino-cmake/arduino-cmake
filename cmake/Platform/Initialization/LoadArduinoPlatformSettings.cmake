@@ -49,7 +49,7 @@
 # a entry setting pair.
 #
 # These variables are generated in order to be able to  programatically traverse
-# all settings (for a example see print_board_settings() function).
+# all settings (for a example see PRINT_BOARD_SETTINGS() function).
 #
 #=============================================================================#
 if (NOT ${SETTINGS_LIST} AND EXISTS ${SETTINGS_PATH})

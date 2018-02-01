@@ -15,8 +15,8 @@
 #=============================================================================#
 macro(PARSE_GENERATOR_ARGUMENTS TARGET_NAME PREFIX OPTIONS ARGS MULTI_ARGS)
     cmake_parse_arguments(${PREFIX} "${OPTIONS}" "${ARGS}" "${MULTI_ARGS}" ${ARGN})
-    error_for_unparsed(${PREFIX})
-    load_generator_settings(${TARGET_NAME} ${PREFIX} ${OPTIONS} ${ARGS} ${MULTI_ARGS})
+    ERROR_FOR_UNPARSED(${PREFIX})
+    LOAD_GENERATOR_SETTINGS(${TARGET_NAME} ${PREFIX} ${OPTIONS} ${ARGS} ${MULTI_ARGS})
 endmacro()
 
 #=============================================================================#

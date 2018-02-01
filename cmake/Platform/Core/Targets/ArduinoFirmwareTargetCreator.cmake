@@ -15,7 +15,7 @@
 # Creates an Arduino firmware target.
 #
 #=============================================================================#
-function(create_arduino_firmware_target TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
+function(CREATE_ARDUINO_FIRMWARE_TARGET TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
         COMPILE_FLAGS LINK_FLAGS MANUAL)
 
     string(STRIP "${ALL_SRCS}" ALL_SRCS)
@@ -26,7 +26,7 @@ function(create_arduino_firmware_target TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
     endif()
     set_target_properties(${TARGET_NAME} PROPERTIES SUFFIX ".elf")
 
-    set_board_flags(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} ${MANUAL})
+    SET_BOARD_FLAGS(ARDUINO_COMPILE_FLAGS ARDUINO_LINK_FLAGS ${BOARD_ID} ${MANUAL})
 
     set_target_properties(${TARGET_NAME} PROPERTIES
             COMPILE_FLAGS "${ARDUINO_COMPILE_FLAGS} ${COMPILE_FLAGS}"
@@ -69,7 +69,7 @@ function(create_arduino_firmware_target TARGET_NAME BOARD_ID ALL_SRCS ALL_LIBS
             ${TARGET_PATH}.hex
             COMMENT "Generating HEX image"
             VERBATIM)
-    _get_board_property(${BOARD_ID} build.mcu MCU)
+    _GET_BOARD_PROPERTY(${BOARD_ID} build.mcu MCU)
     # Display target size
     add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND}

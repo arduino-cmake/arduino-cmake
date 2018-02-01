@@ -1,8 +1,8 @@
 #=============================================================================#
-# load_generator_settings
+# LOAD_GENERATOR_SETTINGS
 # [PRIVATE/INTERNAL]
 #
-# load_generator_settings(TARGET_NAME PREFIX [SUFFIX_1 SUFFIX_2 .. SUFFIX_N])
+# LOAD_GENERATOR_SETTINGS(TARGET_NAME PREFIX [SUFFIX_1 SUFFIX_2 .. SUFFIX_N])
 #
 #         TARGET_NAME - The base name of the user settings
 #         PREFIX      - The prefix name used for generator settings

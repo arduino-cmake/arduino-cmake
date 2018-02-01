@@ -16,11 +16,11 @@
 # The target for uploading the firmware is ${TARGET_NAME}-upload .
 #
 #=============================================================================#
-function(create_arduino_bootloader_upload_target TARGET_NAME BOARD_ID PORT AVRDUDE_FLAGS)
+function(CREATE_ARDUINO_BOOTLOADER_UPLOAD_TARGET TARGET_NAME BOARD_ID PORT AVRDUDE_FLAGS)
     set(UPLOAD_TARGET ${TARGET_NAME}-upload)
     set(AVRDUDE_ARGS)
 
-    build_arduino_bootloader_arguments(${BOARD_ID} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
+    BUILD_ARDUINO_BOOTLOADER_ARGUMENTS(${BOARD_ID} ${TARGET_NAME} ${PORT} "${AVRDUDE_FLAGS}" AVRDUDE_ARGS)
 
     if (NOT AVRDUDE_ARGS)
         message("Could not generate default avrdude bootloader args, aborting!")

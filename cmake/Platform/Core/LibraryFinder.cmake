@@ -1,8 +1,8 @@
 #=============================================================================#
-# find_arduino_libraries
+# FIND_ARDUINO_LIBRARIES
 # [PRIVATE/INTERNAL]
 #
-# find_arduino_libraries(VAR_NAME SRCS ARDLIBS)
+# FIND_ARDUINO_LIBRARIES(VAR_NAME SRCS ARDLIBS)
 #
 #      VAR_NAME - Variable name which will hold the results
 #      SRCS     - Sources that will be analized
@@ -28,7 +28,7 @@
 #  to be part of that Arduino library.
 #
 #=============================================================================#
-function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
+function(FIND_ARDUINO_LIBRARIES VAR_NAME SRCS ARDLIBS)
 
     include(CheckPathExistsCaseSensitive)
     
@@ -46,13 +46,13 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                     ${ARDUINO_PLATFORM_LIBRARIES_PATH} ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}/libraries)
                
-                _check_path_exists_case_sensitive(exists_case_sensitive 
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive 
                   "${LIB_SEARCH_PATH}/${LIB}/${LIB}.h")
                 if (exists_case_sensitive)
                     list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${LIB})
                     break()
                 endif ()
-                _check_path_exists_case_sensitive(exists_case_sensitive 
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive 
                   "${LIB_SEARCH_PATH}/${LIB}.h")
                 if (exists_case_sensitive)
                     list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH})
@@ -60,14 +60,14 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                 endif ()
 
                 # Some libraries like Wire and SPI require building from source
-                _check_path_exists_case_sensitive(exists_case_sensitive
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive
                   "${LIB_SEARCH_PATH}/${LIB}/src/${LIB}.h")
                 if (exists_case_sensitive)
                     message(STATUS "avr library found: ${LIB}")
                     list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${LIB}/src)
                     break()
                 endif ()
-                _check_path_exists_case_sensitive(exists_case_sensitive 
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive 
                   "${LIB_SEARCH_PATH}/src/${LIB}.h")
                 if (exists_case_sensitive)
                     list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/src)
@@ -89,11 +89,11 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
             get_source_file_property(_sketch_generated ${SRC} GENERATED_SKETCH)
 
             if (NOT ${_srcfile_generated} OR ${_sketch_generated})
-                _check_path_exists_case_sensitive(exists_case_sensitive_1
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive_1
                   "${SRC}")
-                _check_path_exists_case_sensitive(exists_case_sensitive_2
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive_2
                   "${CMAKE_CURRENT_SOURCE_DIR}/${SRC}")
-                _check_path_exists_case_sensitive(exists_case_sensitive_3
+                _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive_3
                   "${CMAKE_CURRENT_BINARY_DIR}/${SRC}")
                 if (NOT (exists_case_sensitive_1 OR
                          exists_case_sensitive_2 OR
@@ -115,7 +115,7 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                                 DIRECTORY     # Property Scope
                                 PROPERTY LINK_DIRECTORIES)
                         foreach (LIB_SEARCH_PATH ${LIBRARY_SEARCH_PATH} ${ARDUINO_LIBRARIES_PATH} ${ARDUINO_PLATFORM_LIBRARIES_PATH} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/libraries ${ARDUINO_EXTRA_LIBRARIES_PATH})
-                            _check_path_exists_case_sensitive(exists_case_sensitive
+                            _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive
                               "${LIB_SEARCH_PATH}/${INCLUDE_NAME}/${CMAKE_MATCH_1}")
                             if (exists_case_sensitive)
                                 list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${INCLUDE_NAME})
@@ -123,7 +123,7 @@ function(find_arduino_libraries VAR_NAME SRCS ARDLIBS)
                             endif ()
 
                             # Some libraries like Wire and SPI require building from source
-                            _check_path_exists_case_sensitive(exists_case_sensitive
+                            _CHECK_PATH_EXISTS_CASE_SENSITIVE(exists_case_sensitive
                               "${LIB_SEARCH_PATH}/${INCLUDE_NAME}/src/${CMAKE_MATCH_1}")
                             if (exists_case_sensitive)
                                 list(APPEND ARDUINO_LIBS ${LIB_SEARCH_PATH}/${INCLUDE_NAME}/src)

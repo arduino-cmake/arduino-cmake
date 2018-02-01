@@ -1,8 +1,8 @@
 #=============================================================================#
-# find_sources
+# FIND_SOURCES
 # [PRIVATE/INTERNAL]
 #
-# find_sources(VAR_NAME LIB_PATH RECURSE)
+# FIND_SOURCES(VAR_NAME LIB_PATH RECURSE)
 #
 #        VAR_NAME - Variable name that will hold the detected sources
 #        LIB_PATH - The base path
@@ -11,7 +11,7 @@
 # Finds all C/C++ sources located at the specified path.
 #
 #=============================================================================#
-function(find_sources VAR_NAME LIB_PATH RECURSE)
+function(FIND_SOURCES VAR_NAME LIB_PATH RECURSE)
     set(FILE_SEARCH_LIST
             ${LIB_PATH}/*.cpp
             ${LIB_PATH}/*.c
@@ -32,10 +32,10 @@ function(find_sources VAR_NAME LIB_PATH RECURSE)
 endfunction()
 
 #=============================================================================#
-# find_headers
+# FIND_HEADERS
 # [PRIVATE/INTERNAL]
 #
-# find_headers(VAR_NAME LIB_PATH RECURSE)
+# FIND_HEADERS(VAR_NAME LIB_PATH RECURSE)
 #
 #        VAR_NAME - Variable name that will hold the detected headers
 #        LIB_PATH - The base path
@@ -44,7 +44,7 @@ endfunction()
 # Finds all C/C++ headers located at the specified path.
 #
 #=============================================================================#
-function(find_headers VAR_NAME LIB_PATH RECURSE)
+function(FIND_HEADERS VAR_NAME LIB_PATH RECURSE)
     set(FILE_SEARCH_LIST
             ${LIB_PATH}/*.h
             ${LIB_PATH}/*.hh

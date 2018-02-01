@@ -1,8 +1,8 @@
 #=============================================================================#
-# _get_board_id
+# _GET_BOARD_ID
 # [PRIVATE/INTERNAL]
 #
-# _get_board_id(BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
+# _GET_BOARD_ID(BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
 #
 #        BOARD_NAME - name of the board, eg.: nano, uno, etc...
 #        BOARD_CPU - some boards have multiple versions with different cpus, eg.: nano has atmega168 and atmega328
@@ -29,18 +29,18 @@ function(_GET_BOARD_ID BOARD_NAME BOARD_CPU TARGET_NAME OUTPUT_VAR)
 endfunction()
 
 #=============================================================================#
-# _recursively_replace_properties
+# _RECURSIVELY_REPLACE_PROPERTIES
 # [PRIVATE/INTERNAL]
 #
-# _recursively_replace_properties(BOARD_ID PROPERTY_VALUE_VAR)
-#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+# _RECURSIVELY_REPLACE_PROPERTIES(BOARD_ID PROPERTY_VALUE_VAR)
+#        BOARD_ID - return value from function "_GET_BOARD_ID (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
 #        PROPERTY_VALUE_VAR - the value of a property that may contain
 #           references to other properties.
 #
 # Recursively replaces references to other properties.
 #
 #=============================================================================#
-function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
+function(_RECURSIVELY_REPLACE_PROPERTIES BOARD_ID PROPERTY_VALUE_VAR)
 
    # The following regular expressions looks for arduino property references 
    # that are {property_name} the [^\$] part is just there to ensure that 
@@ -54,7 +54,7 @@ function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
       # The following regular expression checks if the property (variable) 
       # that was referenced is one of a board.
       #
-      _try_get_board_property("${BOARD_ID}" "${variable}" repl_string)
+      _TRY_GET_BOARD_PROPERTY("${BOARD_ID}" "${variable}" repl_string)
       
       if("${repl_string}" STREQUAL "")
          if(NOT "${${variable}}" STREQUAL "")
@@ -74,12 +74,12 @@ function(_recursively_replace_properties BOARD_ID PROPERTY_VALUE_VAR)
 endfunction()
 
 #=============================================================================#
-# _get_board_property
+# _GET_BOARD_PROPERTY
 # [PRIVATE/INTERNAL]
 #
-# _get_board_property(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+# _GET_BOARD_PROPERTY(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
 #
-#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        BOARD_ID - return value from function "_GET_BOARD_ID (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
 #        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
 #        OUT_VAR - variable holding value for the property
 #
@@ -106,7 +106,7 @@ function(_GET_BOARD_PROPERTY BOARD_ID PROPERTY_NAME OUTPUT_VAR)
     if (NOT VALUE)
         message(FATAL_ERROR "Board info not found: BoardName='${BOARD_NAME}' BoardCPU='${BOARD_CPU}' PropertyName='${PROPERTY_NAME}'")
     endif()
-    _recursively_replace_properties(${BOARD_ID} VALUE)
+    _RECURSIVELY_REPLACE_PROPERTIES(${BOARD_ID} VALUE)
     set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
 endfunction()
 
@@ -116,13 +116,13 @@ endfunction()
 #
 # _get_board_property_if_exists(BOARD_ID PROPERTY_NAME OUTPUT_VAR)
 #
-#        BOARD_ID - return value from function "_get_board_id (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
+#        BOARD_ID - return value from function "_GET_BOARD_ID (BOARD_NAME, BOARD_CPU)". It contains BOARD_NAME and BOARD_CPU
 #        PROPERTY_NAME - property name for the board, eg.: bootloader.high_fuses
 #        OUT_VAR - variable holding value for the property
 #
-# Similar to _get_board_property, except it returns empty value if value was not found.
+# Similar to _GET_BOARD_PROPERTY, except it returns empty value if value was not found.
 #=============================================================================#
-function(_try_get_board_property BOARD_ID PROPERTY_NAME OUTPUT_VAR)
+function(_TRY_GET_BOARD_PROPERTY BOARD_ID PROPERTY_NAME OUTPUT_VAR)
     string(REPLACE "." ";" BOARD_INFO ${BOARD_ID})
     list(GET BOARD_INFO 0 BOARD_NAME)
     set(VALUE ${${BOARD_NAME}.${PROPERTY_NAME}})
@@ -139,6 +139,6 @@ function(_try_get_board_property BOARD_ID PROPERTY_NAME OUTPUT_VAR)
     if((NOT VALUE) AND ${PROPERTY_NAME})
         set(VALUE "${${PROPERTY_NAME}}")
     endif()
-    _recursively_replace_properties(${BOARD_ID} VALUE)
+    _RECURSIVELY_REPLACE_PROPERTIES(${BOARD_ID} VALUE)
     set(${OUTPUT_VAR} ${VALUE} PARENT_SCOPE)
 endfunction()

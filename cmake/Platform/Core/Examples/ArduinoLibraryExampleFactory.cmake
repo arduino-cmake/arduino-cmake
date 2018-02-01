@@ -1,8 +1,8 @@
 #=============================================================================#
-# make_arduino_library_example
+# MAKE_ARDUINO_LIBRARY_EXAMPLE
 # [PRIVATE/INTERNAL]
 #
-# make_arduino_library_example(TARGET_NAME LIBRARY_NAME EXAMPLE_NAME OUTPUT_VAR)
+# MAKE_ARDUINO_LIBRARY_EXAMPLE(TARGET_NAME LIBRARY_NAME EXAMPLE_NAME OUTPUT_VAR)
 #
 #      TARGET_NAME  - Target name
 #      LIBRARY_NAME - Library name
@@ -11,7 +11,7 @@
 #
 # Creates a Arduino example from the specified library.
 #=============================================================================#
-function(make_arduino_library_example TARGET_NAME LIBRARY_NAME EXAMPLE_NAME OUTPUT_VAR)
+function(MAKE_ARDUINO_LIBRARY_EXAMPLE TARGET_NAME LIBRARY_NAME EXAMPLE_NAME OUTPUT_VAR)
     set(EXAMPLE_SKETCH_PATH)
 
     get_property(LIBRARY_SEARCH_PATH
@@ -27,7 +27,7 @@ function(make_arduino_library_example TARGET_NAME LIBRARY_NAME EXAMPLE_NAME OUTP
     endforeach ()
 
     if (EXAMPLE_SKETCH_PATH)
-        make_arduino_sketch(${TARGET_NAME} ${EXAMPLE_SKETCH_PATH} SKETCH_CPP)
+        MAKE_ARDUINO_SKETCH(${TARGET_NAME} ${EXAMPLE_SKETCH_PATH} SKETCH_CPP)
         set("${OUTPUT_VAR}" ${${OUTPUT_VAR}} ${SKETCH_CPP} PARENT_SCOPE)
     else ()
         message(FATAL_ERROR "Could not find example ${EXAMPLE_NAME} from library ${LIBRARY_NAME}")

@@ -1,8 +1,8 @@
 #=============================================================================#
-# print_board_list
+# PRINT_BOARD_LIST
 # [PUBLIC/USER]
 #
-# print_board_list()
+# PRINT_BOARD_LIST()
 #
 # see documentation at top
 #=============================================================================#
@@ -10,17 +10,17 @@ function(PRINT_BOARD_LIST)
     foreach (PLATFORM ${ARDUINO_PLATFORMS})
         if (${PLATFORM}_BOARDS)
             message(STATUS "${PLATFORM} Boards:")
-            print_list(${PLATFORM}_BOARDS)
+            PRINT_LIST(${PLATFORM}_BOARDS)
             message(STATUS "")
         endif ()
     endforeach ()
 endfunction()
 
 #=============================================================================#
-# print_programmer_list
+# PRINT_PROGRAMMER_LIST
 # [PUBLIC/USER]
 #
-# print_programmer_list()
+# PRINT_PROGRAMMER_LIST()
 #
 # see documentation at top
 #=============================================================================#
@@ -28,46 +28,46 @@ function(PRINT_PROGRAMMER_LIST)
     foreach (PLATFORM ${ARDUINO_PLATFORMS})
         if (${PLATFORM}_PROGRAMMERS)
             message(STATUS "${PLATFORM} Programmers:")
-            print_list(${PLATFORM}_PROGRAMMERS)
+            PRINT_LIST(${PLATFORM}_PROGRAMMERS)
         endif ()
         message(STATUS "")
     endforeach ()
 endfunction()
 
 #=============================================================================#
-# print_programmer_settings
+# PRINT_PROGRAMMER_SETTINGS
 # [PUBLIC/USER]
 #
-# print_programmer_settings(PROGRAMMER)
+# PRINT_PROGRAMMER_SETTINGS(PROGRAMMER)
 #
 # see documentation at top
 #=============================================================================#
 function(PRINT_PROGRAMMER_SETTINGS PROGRAMMER)
     if (${PROGRAMMER}.SETTINGS)
         message(STATUS "Programmer ${PROGRAMMER} Settings:")
-        print_settings(${PROGRAMMER})
+        PRINT_SETTINGS(${PROGRAMMER})
     endif ()
 endfunction()
 
 #=============================================================================#
-# print_board_settings
+# PRINT_BOARD_SETTINGS
 # [PUBLIC/USER]
 #
-# print_board_settings(ARDUINO_BOARD)
+# PRINT_BOARD_SETTINGS(ARDUINO_BOARD)
 #
 # see documentation at top
 function(PRINT_BOARD_SETTINGS ARDUINO_BOARD)
     if (${ARDUINO_BOARD}.SETTINGS)
         message(STATUS "Arduino ${ARDUINO_BOARD} Board:")
-        print_settings(${ARDUINO_BOARD})
+        PRINT_SETTINGS(${ARDUINO_BOARD})
     endif ()
 endfunction()
 
 #=============================================================================#
-# print_settings
+# PRINT_SETTINGS
 # [PRIVATE/INTERNAL]
 #
-# print_settings(ENTRY_NAME)
+# PRINT_SETTINGS(ENTRY_NAME)
 #
 #      ENTRY_NAME - name of entry
 #
@@ -94,10 +94,10 @@ function(PRINT_SETTINGS ENTRY_NAME)
 endfunction()
 
 #=============================================================================#
-# print_list
+# PRINT_LIST
 # [PRIVATE/INTERNAL]
 #
-# print_list(SETTINGS_LIST)
+# PRINT_LIST(SETTINGS_LIST)
 #
 #      SETTINGS_LIST - Variables name of settings list
 #
