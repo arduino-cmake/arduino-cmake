@@ -40,7 +40,7 @@ function(GENERATE_AVR_FIRMWARE INPUT_NAME)
         list(INSERT INPUT_AFLAGS 0 "AFLAGS")
     endif ()
 
-    generate_arduino_firmware(${INPUT_NAME}
+    GENERATE_ARDUINO_FIRMWARE(${INPUT_NAME}
             NO_AUTOLIBS
             MANUAL
             BOARD ${INPUT_BOARD}

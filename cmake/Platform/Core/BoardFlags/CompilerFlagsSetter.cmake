@@ -1,8 +1,8 @@
 #=============================================================================#
-# _sanitize_quotes
+# _SANITIZE_QUOTES
 # [PRIVATE/INTERNAL]
 #
-# _sanitize_quotes(CMD_LINE_VARIABLE)
+# _SANITIZE_QUOTES(CMD_LINE_VARIABLE)
 #
 #       CMD_LINE_VARIABLE - Variable holding a shell command line 
 #                           or command line flag(s) that potentially 
@@ -12,7 +12,7 @@
 # '-DSOME_MACRO="foo"' would become "-DSOME_MACRO=\"foo\"".
 #
 #=============================================================================#
-function(_sanitize_quotes
+function(_SANITIZE_QUOTES
    CMD_LINE_VARIABLE
 )
    if(CMAKE_HOST_WIN32)
@@ -32,22 +32,22 @@ function(_sanitize_quotes
 endfunction()
 
 # ToDo: Comment
-function(set_board_compiler_flags COMPILER_FLAGS NORMALIZED_SDK_VERSION BOARD_ID IS_MANUAL)
+function(SET_BOARD_COMPILER_FLAGS COMPILER_FLAGS NORMALIZED_SDK_VERSION BOARD_ID IS_MANUAL)
 
-    _try_get_board_property(${BOARD_ID} build.f_cpu FCPU)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.f_cpu FCPU)
     if(NOT "${FCPU}" STREQUAL "")
        set(COMPILE_FLAGS "-DF_CPU=${FCPU}")
     endif()
     
-    _try_get_board_property(${BOARD_ID} build.mcu MCU)    
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.mcu MCU)    
     if(NOT "${MCU}" STREQUAL "")
        set(COMPILE_FLAGS "${COMPILE_FLAGS} -mmcu=${MCU}")
     endif()
     
     set(COMPILE_FLAGS "${COMPILE_FLAGS} -DARDUINO=${NORMALIZED_SDK_VERSION}")
 
-    _try_get_board_property(${BOARD_ID} build.vid VID)
-    _try_get_board_property(${BOARD_ID} build.pid PID)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.vid VID)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.pid PID)
     if (VID)
         set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_VID=${VID}")
     endif ()
@@ -55,21 +55,21 @@ function(set_board_compiler_flags COMPILER_FLAGS NORMALIZED_SDK_VERSION BOARD_ID
         set(COMPILE_FLAGS "${COMPILE_FLAGS} -DUSB_PID=${PID}")
     endif ()
     
-    _try_get_board_property(${BOARD_ID} build.extra_flags EXTRA_FLAGS)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.extra_flags EXTRA_FLAGS)
 
     if(NOT "${EXTRA_FLAGS}" STREQUAL "")
-       _sanitize_quotes(EXTRA_FLAGS)
+       _SANITIZE_QUOTES(EXTRA_FLAGS)
        set(COMPILE_FLAGS "${COMPILE_FLAGS} ${EXTRA_FLAGS}")
     endif()
     
-    _try_get_board_property(${BOARD_ID} build.usb_flags USB_FLAGS)
+    _TRY_GET_BOARD_PROPERTY(${BOARD_ID} build.usb_flags USB_FLAGS)
     if(NOT "${USB_FLAGS}" STREQUAL "")
-       _sanitize_quotes(USB_FLAGS)
+       _SANITIZE_QUOTES(USB_FLAGS)
        set(COMPILE_FLAGS "${COMPILE_FLAGS} ${USB_FLAGS}")
     endif()
 
     if (NOT IS_MANUAL)
-        _get_board_property(${BOARD_ID} build.core BOARD_CORE)
+        _GET_BOARD_PROPERTY(${BOARD_ID} build.core BOARD_CORE)
         set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${${BOARD_CORE}.path}\" -I\"${ARDUINO_LIBRARIES_PATH}\"")
         if (${ARDUINO_PLATFORM_LIBRARIES_PATH})
             set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${ARDUINO_PLATFORM_LIBRARIES_PATH}\"")
@@ -77,7 +77,7 @@ function(set_board_compiler_flags COMPILER_FLAGS NORMALIZED_SDK_VERSION BOARD_ID
     endif ()
     if (ARDUINO_SDK_VERSION VERSION_GREATER 1.0 OR ARDUINO_SDK_VERSION VERSION_EQUAL 1.0)
         if (NOT IS_MANUAL)
-            _get_board_property(${BOARD_ID} build.variant VARIANT)
+            _GET_BOARD_PROPERTY(${BOARD_ID} build.variant VARIANT)
             set(PIN_HEADER ${${VARIANT}.path})
             if (PIN_HEADER)
                 set(COMPILE_FLAGS "${COMPILE_FLAGS} -I\"${PIN_HEADER}\"")

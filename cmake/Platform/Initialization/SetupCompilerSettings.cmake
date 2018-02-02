@@ -2,14 +2,14 @@
 #                              C Flags
 #=============================================================================#
 #=============================================================================#
-# setup_c_flags
+# SETUP_C_FLAGS
 # [PRIVATE/INTERNAL]
 #
-# setup_c_flags()
+# SETUP_C_FLAGS()
 #
 # Setups some basic flags for the gcc compiler to use later.
 #=============================================================================#
-function(setup_c_flags)
+function(SETUP_C_FLAGS)
     if (NOT DEFINED ARDUINO_C_FLAGS)
         set(ARDUINO_C_FLAGS "-mcall-prologues -ffunction-sections -fdata-sections")
     endif (NOT DEFINED ARDUINO_C_FLAGS)
@@ -24,14 +24,14 @@ endfunction()
 #                             C++ Flags
 #=============================================================================#
 #=============================================================================#
-# setup_c_flags
+# SETUP_C_FLAGS
 # [PRIVATE/INTERNAL]
 #
-# setup_cxx_flags()
+# SETUP_CXX_FLAGS()
 #
 # Setups some basic flags for the g++ compiler to use later.
 #=============================================================================#
-function(setup_cxx_flags)
+function(SETUP_CXX_FLAGS)
     if (NOT DEFINED ARDUINO_CXX_FLAGS)
         set(ARDUINO_CXX_FLAGS "${ARDUINO_C_FLAGS} -fno-exceptions")
     endif (NOT DEFINED ARDUINO_CXX_FLAGS)
@@ -46,14 +46,14 @@ endfunction()
 #                       Executable Linker Flags                               #
 #=============================================================================#
 #=============================================================================#
-# setup_exe_linker_flags
+# SETUP_EXE_LINKER_FLAGS
 # [PRIVATE/INTERNAL]
 #
-# setup_exe_linker_flags()
+# SETUP_EXE_LINKER_FLAGS()
 #
 # Setups some basic flags for the gcc linker to use when linking executables.
 #=============================================================================#
-function(setup_exe_linker_flags)
+function(SETUP_EXE_LINKER_FLAGS)
     if (NOT DEFINED ARDUINO_LINKER_FLAGS)
         set(ARDUINO_LINKER_FLAGS "-Wl,--gc-sections -lm")
     endif()
@@ -68,14 +68,14 @@ endfunction()
 #                       Shared Library Linker Flags                           #
 #=============================================================================#
 #=============================================================================#
-# setup_shared_lib_flags
+# SETUP_SHARED_LIB_FLAGS
 # [PRIVATE/INTERNAL]
 #
-# setup_shared_lib_flags()
+# SETUP_SHARED_LIB_FLAGS()
 #
 # Setups some basic flags for the gcc linker to use when linking shared libraries.
 #=============================================================================#
-function(setup_shared_lib_flags)
+function(SETUP_SHARED_LIB_FLAGS)
     set(CMAKE_SHARED_LINKER_FLAGS "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
     set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
     set(CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL "${ARDUINO_LINKER_FLAGS}" CACHE STRING "")
@@ -92,7 +92,7 @@ endfunction()
 #=============================================================================#
 # Setups some basic flags for the gcc/g++ compiler and linker.
 #=============================================================================#
-setup_c_flags()
-setup_cxx_flags()
-setup_exe_linker_flags()
-setup_shared_lib_flags()
+SETUP_C_FLAGS()
+SETUP_CXX_FLAGS()
+SETUP_EXE_LINKER_FLAGS()
+SETUP_SHARED_LIB_FLAGS()

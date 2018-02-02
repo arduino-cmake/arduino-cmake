@@ -1,8 +1,8 @@
 #=============================================================================#
-# build_arduino_programmer_arguments
+# BUILD_ARDUINO_PROGRAMMER_ARGUMENTS
 # [PRIVATE/INTERNAL]
 #
-# build_arduino_programmer_arguments(BOARD_ID PROGRAMMER TARGET_NAME PORT AVRDUDE_FLAGS OUTPUT_VAR)
+# BUILD_ARDUINO_PROGRAMMER_ARGUMENTS(BOARD_ID PROGRAMMER TARGET_NAME PORT AVRDUDE_FLAGS OUTPUT_VAR)
 #
 #      BOARD_ID    - board id
 #      PROGRAMMER  - programmer id
@@ -13,7 +13,7 @@
 #
 # Sets up default avrdude settings for burning firmware via a programmer.
 #=============================================================================#
-function(build_arduino_programmer_arguments BOARD_ID PROGRAMMER TARGET_NAME PORT AVRDUDE_FLAGS OUTPUT_VAR)
+function(BUILD_ARDUINO_PROGRAMMER_ARGUMENTS BOARD_ID PROGRAMMER TARGET_NAME PORT AVRDUDE_FLAGS OUTPUT_VAR)
     set(AVRDUDE_ARGS ${${OUTPUT_VAR}})
 
     if (NOT AVRDUDE_FLAGS)
@@ -46,7 +46,7 @@ function(build_arduino_programmer_arguments BOARD_ID PROGRAMMER TARGET_NAME PORT
         list(APPEND AVRDUDE_ARGS "-i${${PROGRAMMER}.delay}") # Set delay
     endif ()
 
-    _get_board_property(${BOARD_ID} build.mcu MCU)
+    _GET_BOARD_PROPERTY(${BOARD_ID} build.mcu MCU)
     list(APPEND AVRDUDE_ARGS "-p${MCU}")  # MCU Type
 
     list(APPEND AVRDUDE_ARGS ${AVRDUDE_FLAGS})

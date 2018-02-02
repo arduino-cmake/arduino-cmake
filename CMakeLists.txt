@@ -14,7 +14,7 @@ cmake_minimum_required(VERSION 2.8)
 #====================================================================#
 project(ArduinoExample C CXX ASM)
 
-print_board_list()
-print_programmer_list()
+PRINT_BOARD_LIST()
+PRINT_PROGRAMMER_LIST()
 
 add_subdirectory(example)   #add the example directory into build

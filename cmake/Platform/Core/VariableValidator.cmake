@@ -11,7 +11,7 @@
 #=============================================================================#
 function(VALIDATE_VARIABLES_NOT_EMPTY)
     cmake_parse_arguments(INPUT "" "MSG" "VARS" ${ARGN})
-    error_for_unparsed(INPUT)
+    ERROR_FOR_UNPARSED(INPUT)
     foreach (VAR ${INPUT_VARS})
         if ("${${VAR}}" STREQUAL "")
             message(FATAL_ERROR "${VAR} not set: ${INPUT_MSG}")
@@ -20,10 +20,10 @@ function(VALIDATE_VARIABLES_NOT_EMPTY)
 endfunction()
 
 #=============================================================================#
-# error_for_unparsed
+# ERROR_FOR_UNPARSED
 # [PRIVATE/INTERNAL]
 #
-# error_for_unparsed(PREFIX)
+# ERROR_FOR_UNPARSED(PREFIX)
 #
 #        PREFIX - Prefix name
 #

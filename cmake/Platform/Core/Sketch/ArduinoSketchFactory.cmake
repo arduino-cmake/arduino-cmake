@@ -1,8 +1,8 @@
 #=============================================================================#
-# make_arduino_sketch
+# MAKE_ARDUINO_SKETCH
 # [PRIVATE/INTERNAL]
 #
-# make_arduino_sketch(TARGET_NAME SKETCH_PATH OUTPUT_VAR)
+# MAKE_ARDUINO_SKETCH(TARGET_NAME SKETCH_PATH OUTPUT_VAR)
 #
 #      TARGET_NAME - Target name
 #      SKETCH_PATH - Path to sketch directory
@@ -10,7 +10,7 @@
 #
 # Generates C++ sources from Arduino Sketch.
 #=============================================================================#
-function(make_arduino_sketch TARGET_NAME SKETCH_PATH OUTPUT_VAR)
+function(MAKE_ARDUINO_SKETCH TARGET_NAME SKETCH_PATH OUTPUT_VAR)
     get_filename_component(SKETCH_NAME "${SKETCH_PATH}" NAME)
     get_filename_component(SKETCH_PATH "${SKETCH_PATH}" ABSOLUTE)
 
@@ -31,7 +31,7 @@ function(make_arduino_sketch TARGET_NAME SKETCH_PATH OUTPUT_VAR)
         endif ()
         list(SORT SKETCH_SOURCES)
 
-        convert_sketch_to_cpp(${SKETCH_SOURCES} ${SKETCH_CPP})
+        CONVERT_SKETCH_TO_CPP(${SKETCH_SOURCES} ${SKETCH_CPP})
 
         # Regenerate build system if sketch changes
         add_custom_command(OUTPUT ${SKETCH_CPP}

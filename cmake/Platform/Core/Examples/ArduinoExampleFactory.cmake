@@ -1,8 +1,8 @@
 #=============================================================================#
-# make_arduino_example
+# MAKE_ARDUINO_EXAMPLE
 # [PRIVATE/INTERNAL]
 #
-# make_arduino_example(TARGET_NAME EXAMPLE_NAME OUTPUT_VAR [CATEGORY_NAME])
+# MAKE_ARDUINO_EXAMPLE(TARGET_NAME EXAMPLE_NAME OUTPUT_VAR [CATEGORY_NAME])
 #
 #      TARGET_NAME  - Target name
 #      EXAMPLE_NAME - Example name
@@ -11,7 +11,7 @@
 #
 # Creates an Arduino example from the built-in categories.
 #=============================================================================#
-function(make_arduino_example TARGET_NAME EXAMPLE_NAME OUTPUT_VAR)
+function(MAKE_ARDUINO_EXAMPLE TARGET_NAME EXAMPLE_NAME OUTPUT_VAR)
 
     set(OPTIONAL_ARGUMENTS ${ARGN})
     list(LENGTH OPTIONAL_ARGUMENTS ARGC)
@@ -61,7 +61,7 @@ function(make_arduino_example TARGET_NAME EXAMPLE_NAME OUTPUT_VAR)
     endif ()
 
     if (EXAMPLE_SKETCH_PATH)
-        make_arduino_sketch(${TARGET_NAME} ${EXAMPLE_SKETCH_PATH} SKETCH_CPP)
+        MAKE_ARDUINO_SKETCH(${TARGET_NAME} ${EXAMPLE_SKETCH_PATH} SKETCH_CPP)
         set("${OUTPUT_VAR}" ${${OUTPUT_VAR}} ${SKETCH_CPP} PARENT_SCOPE)
     else ()
         message(FATAL_ERROR "Could not find example ${EXAMPLE_NAME}")

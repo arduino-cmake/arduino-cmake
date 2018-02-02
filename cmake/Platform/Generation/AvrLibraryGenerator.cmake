@@ -35,7 +35,7 @@ function(GENERATE_AVR_LIBRARY INPUT_NAME)
     endif ()
 
 
-    generate_arduino_library(${INPUT_NAME}
+    GENERATE_ARDUINO_LIBRARY(${INPUT_NAME}
             NO_AUTOLIBS
             MANUAL
             BOARD ${INPUT_BOARD}

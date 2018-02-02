@@ -27,42 +27,42 @@ function(GENERATE_ARDUINO_LIBRARY_EXAMPLE INPUT_NAME)
     endif ()
     VALIDATE_VARIABLES_NOT_EMPTY(VARS INPUT_LIBRARY INPUT_EXAMPLE INPUT_BOARD
             MSG "must define for target ${INPUT_NAME}")
-    _get_board_id(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
+    _GET_BOARD_ID(${INPUT_BOARD} "${INPUT_BOARD_CPU}" ${INPUT_NAME} BOARD_ID)
 
     message(STATUS "Generating ${INPUT_NAME}")
 
     set(ALL_LIBS)
     set(ALL_SRCS)
 
-    make_core_library(CORE_LIB ${BOARD_ID})
+    MAKE_CORE_LIBRARY(CORE_LIB ${BOARD_ID})
 
-    find_arduino_libraries(TARGET_LIBS "" "${INPUT_LIBRARY}")
+    FIND_ARDUINO_LIBRARIES(TARGET_LIBS "" "${INPUT_LIBRARY}")
     set(LIB_DEP_INCLUDES)
     foreach (LIB_DEP ${TARGET_LIBS})
         set(LIB_DEP_INCLUDES "${LIB_DEP_INCLUDES} -I\"${LIB_DEP}\"")
     endforeach ()
 
-    make_arduino_library_example("${INPUT_NAME}" "${INPUT_LIBRARY}"
+    MAKE_ARDUINO_LIBRARY_EXAMPLE("${INPUT_NAME}" "${INPUT_LIBRARY}"
             "${INPUT_EXAMPLE}" ALL_SRCS)
 
     if (NOT ALL_SRCS)
         message(FATAL_ERROR "Missing sources for example, aborting!")
     endif ()
 
-    make_arduino_libraries(ALL_LIBS ${BOARD_ID} "${TARGET_LIBS}"
+    MAKE_ARDUINO_LIBRARIES(ALL_LIBS ${BOARD_ID} "${TARGET_LIBS}"
             "${LIB_DEP_INCLUDES}" "")
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
 
-    create_arduino_firmware_target(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}"
+    CREATE_ARDUINO_FIRMWARE_TARGET(${INPUT_NAME} ${BOARD_ID} "${ALL_SRCS}" "${ALL_LIBS}"
             "${LIB_DEP_INCLUDES}" "" FALSE)
 
     if (INPUT_PORT)
-        create_arduino_upload_target(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT}
+        CREATE_ARDUINO_UPLOAD_TARGET(${BOARD_ID} ${INPUT_NAME} ${INPUT_PORT}
                 "${INPUT_PROGRAMMER}" "${INPUT_AFLAGS}")
     endif ()
 
     if (INPUT_SERIAL)
-        create_serial_target(${INPUT_NAME} "${INPUT_SERIAL}" "${INPUT_PORT}")
+        CREATE_SERIAL_TARGET(${INPUT_NAME} "${INPUT_SERIAL}" "${INPUT_PORT}")
     endif ()
 endfunction()

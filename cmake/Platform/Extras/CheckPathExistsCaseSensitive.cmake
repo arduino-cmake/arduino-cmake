@@ -1,8 +1,8 @@
 #=============================================================================#
-# _check_path_exists_case_sensitive_brute_force
+# _CHECK_PATH_EXISTS_CASE_SENSITIVE_BRUTE_FORCE
 # [PRIVATE/INTERNAL]
 #
-# _check_path_exists_case_sensitive_brute_force(result_var_ absolute_path_)
+# _CHECK_PATH_EXISTS_CASE_SENSITIVE_BRUTE_FORCE(result_var_ absolute_path_)
 #
 #        result_var_ - A variable in parent scope that is assigned the result
 #                      of the check. The result is TRUE if the file 
@@ -18,9 +18,9 @@
 # on Windows (at least not up to CMake version 3.9.6).
 #
 # Important: Do not use this function directly but prefer to use 
-#            _check_path_exists_case_sensitive
+#            _CHECK_PATH_EXISTS_CASE_SENSITIVE
 #=============================================================================#
-function(_check_path_exists_case_sensitive_brute_force result_var_ absolute_path_)
+function(_CHECK_PATH_EXISTS_CASE_SENSITIVE_BRUTE_FORCE result_var_ absolute_path_)
 
    # We recursively traverse the absolute_path_ from its root and
    # check it any path token cannot be found (early exit)
@@ -56,10 +56,10 @@ function(_check_path_exists_case_sensitive_brute_force result_var_ absolute_path
 endfunction()
    
 #=============================================================================#
-# _check_path_exists_case_sensitive
+# _CHECK_PATH_EXISTS_CASE_SENSITIVE
 # [PRIVATE/INTERNAL]
 #
-# _check_path_exists_case_sensitive(result_var_ absolute_path_)
+# _CHECK_PATH_EXISTS_CASE_SENSITIVE(result_var_ absolute_path_)
 #
 #        result_var_ - A variable in parent scope that is assigned the result
 #                      of the check. The result is TRUE if the file 
@@ -72,7 +72,7 @@ endfunction()
 # This is necessary because CMake's if(EXISTS ...) is not case sensitive
 # on Windows (at least not up to CMake version 3.9.6).
 #=============================================================================#
-function(_check_path_exists_case_sensitive result_var_ absolute_path_)
+function(_CHECK_PATH_EXISTS_CASE_SENSITIVE result_var_ absolute_path_)
    
    # Important: First check for APPLE as CMAKE_HOST_UNIX reports true even 
    #            if CMAKE_HOST_APPLE is true
@@ -84,7 +84,7 @@ function(_check_path_exists_case_sensitive result_var_ absolute_path_)
       # MacOS file systems are mostly case insensitive by default.
       # That's why we fall back to brute force directory comparison.
       #
-      _check_path_exists_case_sensitive_brute_force(tmp_result "${absolute_path_}")
+      _CHECK_PATH_EXISTS_CASE_SENSITIVE_BRUTE_FORCE(tmp_result "${absolute_path_}")
       set(${result_var_} ${tmp_result} PARENT_SCOPE)
       
       return()
