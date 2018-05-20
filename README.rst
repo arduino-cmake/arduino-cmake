@@ -958,7 +958,7 @@ Using **Arduino CMake** in your own project is simple, you just need a single di
 
 Copying the **cmake** directory, although simple is not the best solution. If you are using GIT for source code versioning, the best solution is using a submodule. The submodule gives you the power of updating to the latest version of **Arduino CMake** without any effort. To add a submodule do::
 
-    git submodule add git://github.com/queezythegreat/arduino-cmake.git arduino-cmake
+    git submodule add git://github.com/arduino-cmake/arduino-cmake.git arduino-cmake
 
 Then just set the CMAKE_TOOLCHAIN_FILE variable::
 
