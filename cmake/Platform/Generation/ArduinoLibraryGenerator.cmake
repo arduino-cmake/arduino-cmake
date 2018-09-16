@@ -35,7 +35,7 @@ function(GENERATE_ARDUINO_LIBRARY INPUT_NAME)
     endforeach ()
 
     if (NOT ${INPUT_NO_AUTOLIBS})
-        make_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "" "${LIB_DEP_INCLUDES}" "")
+        make_arduino_libraries(ALL_LIBS ${BOARD_ID} "${ALL_SRCS}" "${TARGET_LIBS}" "${LIB_DEP_INCLUDES}" "")
     endif ()
 
     list(APPEND ALL_LIBS ${CORE_LIB} ${INPUT_LIBS})
